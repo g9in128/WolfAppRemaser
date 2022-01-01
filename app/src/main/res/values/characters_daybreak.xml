@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sentinel">0.수호자</string>
+    <string name="alpha_wolf">2B.태초의 늑대인간</string>
+    <string name="mystic_wolf">2C.신비한 늑대인간</string>
+    <string name="apprentice_weer">5B.견습 예언자</string>
+    <string name="paranormal_investigator">5C.심령 수사관</string>
+    <string name="witch">6B.마녀</string>
+    <string name="village_idiot">7B.동네 얼간이</string>
+    <string name="revealer">10.계시자</string>
+    <string name="curator">11.유물 관리자</string>
+    <string name="bodyguard">호위병</string>
+
+</resources>
