@@ -20,6 +20,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
         characters = findViewById(R.id.characters);
         hostSpeech = findViewById(R.id.host_speech);
         entry = findViewById(R.id.entry);
@@ -30,7 +33,5 @@ public class MainActivity extends AppCompatActivity {
         stopBtn = findViewById(R.id.stop_btn);
         pauseBtn = findViewById(R.id.pause_btn);
 
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
     }
 }
