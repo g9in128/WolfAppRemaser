@@ -1,31 +1,39 @@
 package com.example.wolfappremaster;
 
+import java.util.HashMap;
+
 public class CharacterItem {
 
-    private String character,speech;
+    private Character character;
+    private String order;
     private int count,waitingTime;
+    private HashMap<String,Speech> speeches;
 
-    public CharacterItem(String character, String speech, int count, int waitingTime) {
+    public CharacterItem(Character character, String order, int count, int waitingTime, Speech... speeches) {
         this.character = character;
-        this.speech = speech;
+        this.order = order;
         this.count = count;
         this.waitingTime = waitingTime;
+        this.speeches = new HashMap<>();
+        for(Speech i : speeches) {
+            this.speeches.put(i.getOrder(),i);
+        }
     }
 
-    public String getCharacter() {
+    public Character getCharacter() {
         return character;
     }
 
-    public void setCharacter(String character) {
+    public void setCharacter(Character character) {
         this.character = character;
     }
 
-    public String getSpeech() {
-        return speech;
+    public String getOrder() {
+        return order;
     }
 
-    public void setSpeech(String speech) {
-        this.speech = speech;
+    public void setOrder(String order) {
+        this.order = order;
     }
 
     public int getCount() {
@@ -42,5 +50,9 @@ public class CharacterItem {
 
     public void setWaitingTime(int waitingTime) {
         this.waitingTime = waitingTime;
+    }
+
+    public HashMap<String, Speech> getSpeeches() {
+        return speeches;
     }
 }

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="doppelganger">1.도플갱어</string>
-    <string name="speech_doppelganger">도플갱어는 눈을 뜹니다 다른사람 하나의 직업을 확인합니다. 만약 본 직업이 %1$s이라면 지금 능력을 사용합니다.</string>
+    <string name="speech_doppelganger">도플갱어는 눈을 뜹니다 다른사람 하나의 직업을 확인합니다. 만약 본 직업이 {} 이라면 지금 능력을 사용합니다.</string>
     <string name="werewolf">2.늑대인간</string>
-    <string name="speech_werewolf">늑대인간은 눈을떠서 서로를 확인합니다. %1$s 만약 혼자일경우 가운데 카드중 하나를 확인합니다.</string>
+    <string name="speech_werewolf">늑대인간은 눈을떠서 서로를 확인합니다. {} 만약 혼자일경우 가운데 카드중 하나를 확인합니다.</string>
     <string name="minion">3.하수인</string>
     <string name="speech_minion">늑대인간은 손을 앞으로 뻗어 자신의 존재를 알립니다 하수인은 그걸 확인합니다.</string>
     <string name="speech_dop_minion">도플갱어가 하수인을 봤을경우 지금 눈을떠서 늑대인간을 확인합니다.</string>
     <string name="mason">4.프리메이슨</string>
-    <string name="speech_mason">프리메이슨은 눈을떠서 서로를확인합니다. %1$s</string>
+    <string name="speech_mason">프리메이슨은 눈을떠서 서로를확인합니다. {}</string>
     <string name="seer">5.예언자</string>
     <string name="speech_seer">예언자는 눈을 뜹니다 예언자는 가운데 카드 두장 또는 다른사람의 카드 한장을 확인합니다.</string>
     <string name="robber">6.강도</string>
@@ -16,10 +16,10 @@
     <string name="troublemaker">7.말썽쟁이</string>
     <string name="speech_troublemaker">말썽쟁이는 눈을 뜹니다 다른사람 두명의 카드를 서로 바꾼뒤 확인하지 않습니다.</string>
     <string name="drunk">8.주정뱅이</string>
-    <string name="speech_drunk">주정뱅이는 눈을뜹니다 주정뱅이는 가운데 카드중 하나와 자신의카드를 바꿔야 합니다 확인하지 않습니다.</string>
+    <string name="speech_drunk">주정뱅이는 눈을 뜹니다 주정뱅이는 가운데 카드중 하나와 자신의카드를 바꿔야 합니다 확인하지 않습니다.</string>
     <string name="insomniac">9.불면증환자</string>
-    <string name="speech_insomniac">불면증환자는 눈을뜹니다 불면증환자는 최종적으로 바뀐 자신의 직업카드를 확인합니다.</string>
-    <string name="speech_dop_insomniac">만약 도플갱어가 불면증환자를 봤다면 지금 눈을떠서 최종적으로 바뀐 직업카드를 확인합니다.</string>
+    <string name="speech_insomniac">불면증환자는 눈을 뜹니다 불면증환자는 최종적으로 바뀐 자신의 직업카드를 확인합니다.</string>
+    <string name="speech_dop_insomniac">만약 도플갱어가 불면증환자를 봤다면 지금 눈을 뜹니다 최종적으로 바뀐 자신의 직업카드를 확인합니다.</string>
     <string name="tanner">무두장이</string>
     <string name="hunter">사냥꾼</string>
     <string name="villager">마을주민</string>
