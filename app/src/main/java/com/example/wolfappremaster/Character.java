@@ -14,8 +14,11 @@ public class Character {
 
     private static Character newCharacter(String name,String text,int maxCount,int waitingTime) {
         String order;
-        if (!name.contains(".")) order =  null;
-        else order =  name.split(".")[0];
+        if (!name.contains(".")) order =  "";
+        else {
+            order =  name.split(".")[0];
+            text = name.split(".")[1];
+        }
         return new Character(name,text,order,maxCount, waitingTime);
     }
 

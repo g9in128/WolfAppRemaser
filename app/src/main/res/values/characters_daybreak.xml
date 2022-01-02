@@ -1,13 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="sentinel">0.수호자</string>
+    <string name="speech_sentinel">수호자는 눈을 뜹니다 다른 사람 한명의 카드 위에 방패토큰 하나를 올려놓습니다. 방패토큰이 올려진 카드는 다른 능력에 영향을 받지 않습니다.</string>
     <string name="alpha_wolf">2B.태초의 늑대인간</string>
+    <string name="speech_alpha_wolf">태초의 늑대인간은 눈을 뜹니다 중앙의 늑대인간카드를 다른사람의 카드와 바꿉니다.</string>
     <string name="mystic_wolf">2C.신비한 늑대인간</string>
+    <string name="speech_mystic_wolf">신비한 늑대인간은 눈을 뜹니다 다른사람 한명의 카드를 확인합니다.</string>
     <string name="apprentice_weer">5B.견습 예언자</string>
+    <string name="speech_apprentice_weer">견습예언자는 눈을 뜹니다 가운데 카드 한장을 확인합니다</string>
     <string name="paranormal_investigator">5C.심령 수사관</string>
+    <string name="speech_paranormal_investigator">심령 수사관은 눈을 뜹니다 다른사람 한명의 카드를 봅니다 만약 본 카드가 늑대인간이나 무두장이일 경우 심령수사관은 그 직업이 됩니다 아닐경우 한번더 다른사람의 한명의 카드를 봐서 이상의 능력을 적용합니다.</string>
     <string name="witch">6B.마녀</string>
+    <string name="speech_witch">마녀는 눈을 뜹니다 가운데 카드 한장을 확인하고 원하는 사람의 카드와 바꿉니다.</string>
     <string name="village_idiot">7B.동네 얼간이</string>
+    <string name="speech_village_idiot">동네 얼간이는 눈을 뜹니다 다른 모든사람의 카드를 오른쪽이나 왼쪽으로 한칸씩 옮깁니다.</string>
     <string name="revealer">10.계시자</string>
+    <string name="speech_revealer">계시자는 눈을 뜹니다 원하는 사람의 카드를 확인해서 늑대인간이나 무두장이일 경우 그대로 뒤집어 놓고 아닐경우 카드를 공개한 채로 놔둡니다.</string>
+    <string name="speech_dop_revealer">만약 도플갱어가 계시자를 봤다면 지금 눈을 뜹니다 원하는 사람의 카드를 확인해서 늑대인간이나 무두장이일 경우 그대로 뒤집어 놓고 아닐경우 카드를 공개한 채로 놔둡니다.</string>
     <string name="curator">11.유물 관리자</string>
+    <string name="speech_curator">유물 관리자는 눈을 뜹니다 유물토큰중 무작위로 하나를 골라 원하는 사람의 카드 위에 올려 놓습니다.</string>
+    <string name="speech_dop_curator">만일 도플갱어가 유물관리자를 봤다면 지금 눈을뜹니다 유물토큰중 무작위로 하나를 골라 원하는 사람의 카드 위에 올려 놓습니다.</string>
     <string name="bodyguard">호위병</string>
 </resources>

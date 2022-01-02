@@ -1,8 +1,10 @@
 <resources>
     <string name="app_name">WolfApp Remaster</string>
     <string name="load_text_btn_text">불러오기</string>
-    <string name="entry_text">참여인원 : %1$s명</string>
+    <string name="entry_text">참여인원 : %2$s명</string>
     <string name="start_btn_text">시작</string>
     <string name="stop_btn_text">중지</string>
     <string name="pause_btn_text">일시중지</string>
+    <string name="close_eye">%1$s 눈을 감습니다.</string>
+    <string name="hands_down">%1$s 손을 내립니다.</string>
 </resources>
