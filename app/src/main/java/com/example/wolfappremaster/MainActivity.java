@@ -17,7 +17,6 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout selectBtns,playBtns;
     Button loadBtn,startBtn,stopBtn,pauseBtn;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
         startBtn = findViewById(R.id.start_btn);
         stopBtn = findViewById(R.id.stop_btn);
         pauseBtn = findViewById(R.id.pause_btn);
+
+
 
     }
 }

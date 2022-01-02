@@ -102,8 +102,7 @@ public class Character {
                     WITCH,VILLAGE_IDIOT,REVEALER,CURATOR,BODYGUARD};
 
     private final String name,text,order;
-    private final int maxCount;
-    private int waitingTime;
+    private final int maxCount,waitingTime;
 
     @Override
     public String toString() {
@@ -134,10 +133,6 @@ public class Character {
 
     public int getWaitingTime() {
         return waitingTime;
-    }
-
-    public void setWaitingTime(int waitingTime) {
-        this.waitingTime = waitingTime;
     }
 
     public String getName() {
