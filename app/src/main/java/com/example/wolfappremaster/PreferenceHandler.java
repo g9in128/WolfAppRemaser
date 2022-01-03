@@ -35,11 +35,15 @@ public class PreferenceHandler {
     }
 
     public String getString(String name,String key) {
-        return preferences.get(name).getString(key,null);
+        SharedPreferences pref = preferences.get(name);
+        if (pref == null) return null;
+        return pref.getString(key,null);
     }
 
     public void setString(String name,String key,String value) {
-        SharedPreferences.Editor editor = preferences.get(key).edit();
+        SharedPreferences pref = preferences.get(key);
+        if (pref == null) return;
+        SharedPreferences.Editor editor = pref.edit();
         editor.putString(value,"");
         editor.commit();
     }

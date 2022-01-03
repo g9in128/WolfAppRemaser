@@ -16,6 +16,7 @@
         android:text="2B.태초의 늑대인간"/>
 
     <Button
+        android:id="@+id/count_btn"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="match_parent"

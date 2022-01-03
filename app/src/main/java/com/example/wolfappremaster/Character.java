@@ -103,7 +103,7 @@ public class Character {
             newCharacter("insomniac",system.getString(R.string.insomniac),new Speech(system.getString(R.string.speech_insomniac),"9"));
 
     public static final Character DOP_INSOMNIAC =
-            newCharacter("dop_insomniac",system.getString(R.string.dop_insomniac),new Speech(system.getString(R.string.speech_dop_insomniac),"9~"));
+            newCharacter("dop_insomniac",system.getString(R.string.dop_insomniac),0,new Speech(system.getString(R.string.speech_dop_insomniac),"9~"));
 
     public static final Character TANNER =
             newCharacter("tanner",system.getString(R.string.tanner));
@@ -167,13 +167,13 @@ public class Character {
             newCharacter("revealer",system.getString(R.string.revealer),new Speech(system.getString(R.string.speech_revealer),"10"));
 
     public static final Character DOP_REVEALER =
-            newCharacter("dop_revealer",system.getString(R.string.dop_revealer),new Speech(system.getString(R.string.speech_revealer),"10~"));
+            newCharacter("dop_revealer",system.getString(R.string.dop_revealer),0,new Speech(system.getString(R.string.speech_revealer),"10~"));
 
     public static final Character CURATOR =
             newCharacter("curator",system.getString(R.string.curator),new Speech(system.getString(R.string.speech_curator),"11"));
 
     public static final Character DOP_CURATOR =
-            newCharacter("dop_curator", system.getString(R.string.dop_curator),new Speech(system.getString(R.string.speech_dop_curator),"11~"));
+            newCharacter("dop_curator", system.getString(R.string.dop_curator),0,new Speech(system.getString(R.string.speech_dop_curator),"11~"));
 
     public static final Character BODYGUARD =
             newCharacter("bodyguard",system.getString(R.string.bodyguard));
@@ -185,6 +185,8 @@ public class Character {
     public static final Character[] daybreakCharacters =
             {SENTINEL,ALPHA_WOLF,MYSTIC_WOLF,APPRENTICE_SEER,PARANORMAL_INVESTIGATOR,
                     WITCH,VILLAGE_IDIOT,REVEALER,DOP_REVEALER,CURATOR,DOP_CURATOR,BODYGUARD};
+
+
 
     private final String name,text,order;
     private final boolean dopDirect;

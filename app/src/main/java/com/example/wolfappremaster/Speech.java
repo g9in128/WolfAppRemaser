@@ -26,6 +26,10 @@ public class Speech {
         return speech;
     }
 
+    public String getSpeech(List<Character> list) {
+        return this.format.format(speech,list);
+    }
+
     public void setSpeech(String speech) {
         this.speech = speech;
     }

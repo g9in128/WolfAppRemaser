@@ -1,20 +1,23 @@
 package com.example.wolfappremaster;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import java.util.HashMap;
 
 public class CharacterItem {
 
-    private Character character;
-    private String order;
+    private final Character character;
     private int count,waitingTime;
-    private HashMap<String,Speech> speeches;
+    private final HashMap<String,Speech> speeches;
 
-    public CharacterItem(Character character, String order, int count, int waitingTime, Speech... speeches) {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public CharacterItem(Character character, int waitingTime, Speech... speeches) {
         this.character = character;
-        this.order = order;
-        this.count = count;
+        this.count = 0;
         this.waitingTime = waitingTime;
-        this.speeches = new HashMap<>();
+        this.speeches = character.getSpeeches();
         for(Speech i : speeches) {
             this.speeches.put(i.getOrder(),i);
         }
@@ -22,18 +25,6 @@ public class CharacterItem {
 
     public Character getCharacter() {
         return character;
-    }
-
-    public void setCharacter(Character character) {
-        this.character = character;
-    }
-
-    public String getOrder() {
-        return order;
-    }
-
-    public void setOrder(String order) {
-        this.order = order;
     }
 
     public int getCount() {
