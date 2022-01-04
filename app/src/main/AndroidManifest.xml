@@ -13,12 +13,18 @@
             android:name=".MainActivity"
             android:exported="true"
             android:screenOrientation="landscape">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-    </application>
+        <activity
+            android:name=".SaveLoadPopupActivity"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.Dialog">
+        </activity>
 
+    </application>
 </manifest>

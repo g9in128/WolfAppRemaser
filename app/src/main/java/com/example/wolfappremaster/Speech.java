@@ -1,34 +1,36 @@
 package com.example.wolfappremaster;
 
-import java.util.List;
-
 public class Speech {
-
-    public interface Format {
-        String format(String speech, List<Character> characters);
-    }
 
     private String speech;
     private String order;
-    private Format format;
+    private int waitingTime;
 
     public Speech(String speech, String order) {
-        this(speech,order,((speech1, characters) -> speech1));
-    }
-
-    public Speech(String speech, String order,Format format) {
         this.speech = speech;
         this.order = order;
-        this.format = format;
+        this.waitingTime = waitingTime;
+    }
+
+    public Speech(String speech, String order, Format.FormatFunc format) {
+        this.speech = speech;
+        this.order = order;
+        this.waitingTime = waitingTime;
+        Format.add(order,format);
+    }
+
+    @Override
+    public String toString() {
+        return "Speech{" +
+                "speech='" + speech + '\'' +
+                ", order='" + order + '\'' +
+                '}';
     }
 
     public String getSpeech() {
         return speech;
     }
 
-    public String getSpeech(List<Character> list) {
-        return this.format.format(speech,list);
-    }
 
     public void setSpeech(String speech) {
         this.speech = speech;
@@ -40,5 +42,13 @@ public class Speech {
 
     public void setOrder(String order) {
         this.order = order;
+    }
+
+    public int getWaitingTime() {
+        return waitingTime;
+    }
+
+    public void setWaitingTime(int waitingTime) {
+        this.waitingTime = waitingTime;
     }
 }

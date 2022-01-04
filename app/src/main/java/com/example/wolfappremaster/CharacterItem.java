@@ -19,6 +19,9 @@ public class CharacterItem {
         this.waitingTime = waitingTime;
         this.speeches = character.getSpeeches();
         for(Speech i : speeches) {
+            if (i.getOrder().equals(getCharacter().getOrder())) {
+                i.setWaitingTime(waitingTime);
+            }
             this.speeches.put(i.getOrder(),i);
         }
     }

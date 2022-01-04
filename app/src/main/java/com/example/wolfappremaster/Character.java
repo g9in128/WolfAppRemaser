@@ -3,7 +3,6 @@ package com.example.wolfappremaster;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Build;
-import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -13,38 +12,43 @@ import java.util.stream.Collectors;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class Character {
 
+
+
     private static Resources system;
+
 
     public static void initResource(Context context) {
         system = context.getResources();
 
-        DOPPELGANGER.initCharacter(system.getString(R.string.doppelganger),
-                new Speech(system.getString(R.string.speech_doppelganger),
-                    "1", (speech, characters) -> {
-                String str = characters.stream().filter(character -> character.dopDirect).map(character -> character.text).collect(Collectors.joining(","));
-                return speech.replace("{}",str);
-        }));
-
-        WEREWOLF.initCharacter(system.getString(R.string.werewolf),
+        Speech WOLF_SPEECH =
                 new Speech(system.getString(R.string.speech_werewolf),"2",(speech, characters) ->{
-                if (!characters.contains(DOPPELGANGER)) {
-                    String str = "";
-                    boolean add = true;
-                    for (char i : speech.toCharArray()) {
-                        if (i == '{'&& add) add = false;
-                        if (add) str += i;
-                        if (i == '}'&& !add) add = true;
+                    if (!characters.contains(DOPPELGANGER)) {
+                        String str = "";
+                        boolean add = true;
+                        for (char i : speech.toCharArray()) {
+                            if (i == '{'&& add) add = false;
+                            if (add) str += i;
+                            if (i == '}'&& !add) add = true;
+                        }
+                        return str;
                     }
-                    return str;
-                }
-                return speech.replace("{","").replace("}","");
-        }));
+                    return speech.replace("{","").replace("}","");
+                });
+
+        DOPPELGANGER.initCharacter(system.getString(R.string.doppelganger),
+                new Speech(system.getString(R.string.speech_doppelganger), "1", (speech, characters) -> {
+                String str = characters.stream().filter(character -> character.dopDirect == DOP_DIRECT).map(character -> character.text).collect(Collectors.joining(","));
+                return speech.replace("{}",str);
+                }));
+
+        WEREWOLF.initCharacter(system.getString(R.string.werewolf),WOLF_SPEECH);
+
         MINION.initCharacter(system.getString(R.string.minion),
                 new Speech(system.getString(R.string.speech_minion),"3"),
-                    new Speech(system.getString(R.string.hands_down),"3~~"));
+                    new Speech(system.getString(R.string.werewolf_hands_down),"3 ~~"));
 
         DOP_MINION.initCharacter(system.getString(R.string.dop_minion),
-                new Speech(system.getString(R.string.speech_dop_minion),"3~"));
+                new Speech(system.getString(R.string.speech_dop_minion),"3 ~"));
 
         MASON.initCharacter(system.getString(R.string.mason),
                 new Speech(system.getString(R.string.speech_mason),"4",(speech, characters) ->{
@@ -76,7 +80,7 @@ public class Character {
                 new Speech(system.getString(R.string.speech_insomniac),"9"));
 
         DOP_INSOMNIAC.initCharacter(system.getString(R.string.dop_insomniac),
-                new Speech(system.getString(R.string.speech_dop_insomniac),"9~"));
+                new Speech(system.getString(R.string.speech_dop_insomniac),"9 ~"));
 
         TANNER.initCharacter(system.getString(R.string.tanner),
                 new Speech(system.getString(R.string.speech_tanner),""));
@@ -92,59 +96,35 @@ public class Character {
         SENTINEL.initCharacter(system.getString(R.string.sentinel),
                 new Speech(system.getString(R.string.speech_sentinel),"0"));
 
-        ALPHA_WOLF.initCharacter(system.getString(R.string.alpha_wolf),
-                    new Speech(system.getString(R.string.speech_werewolf),"2",(speech, characters) ->{
-                if (!characters.contains(DOPPELGANGER)) {
-                    String str = "";
-                    boolean add = true;
-                    for (char i : speech.toCharArray()) {
-                        if (i == '{'&& add) add = false;
-                        if (add) str += i;
-                        if (i == '}'&& !add) add = true;
-                    }
-                    return str;
-                }
-                return speech.replace("{","").replace("}","");
-            }),new Speech(system.getString(R.string.speech_alpha_wolf),"2B"));
+        ALPHA_WOLF.initCharacter(system.getString(R.string.alpha_wolf),WOLF_SPEECH
+            ,new Speech(system.getString(R.string.speech_alpha_wolf),"2 B"));
 
-        MYSTIC_WOLF.initCharacter(system.getString(R.string.mystic_wolf),
-                    new Speech(system.getString(R.string.speech_werewolf),"2",(speech, characters) ->{
-                if (!characters.contains(DOPPELGANGER)) {
-                    String str = "";
-                    boolean add = true;
-                    for (char i : speech.toCharArray()) {
-                        if (i == '{'&& add) add = false;
-                        if (add) str += i;
-                        if (i == '}'&& !add) add = true;
-                    }
-                    return str;
-                }
-                return speech.replace("{","").replace("}","");
-            }),new Speech(system.getString(R.string.speech_mystic_wolf),"2C"));
+        MYSTIC_WOLF.initCharacter(system.getString(R.string.mystic_wolf),WOLF_SPEECH
+                ,new Speech(system.getString(R.string.speech_mystic_wolf),"2 C"));
 
         APPRENTICE_SEER.initCharacter(system.getString(R.string.apprentice_seer),
-                    new Speech(system.getString(R.string.speech_apprentice_seer),"5B"));
+                    new Speech(system.getString(R.string.speech_apprentice_seer),"5 B"));
 
         PARANORMAL_INVESTIGATOR.initCharacter(system.getString(R.string.paranormal_investigator),
-                new Speech(system.getString(R.string.speech_paranormal_investigator),"5C"));
+                new Speech(system.getString(R.string.speech_paranormal_investigator),"5 C"));
 
         WITCH.initCharacter(system.getString(R.string.witch),
-                new Speech(system.getString(R.string.speech_witch),"6B"));
+                new Speech(system.getString(R.string.speech_witch),"6 B"));
 
         VILLAGE_IDIOT.initCharacter(system.getString(R.string.village_idiot),
-                    new Speech(system.getString(R.string.speech_village_idiot),"7B"));
+                    new Speech(system.getString(R.string.speech_village_idiot),"7 B"));
 
         REVEALER.initCharacter(system.getString(R.string.revealer),
                 new Speech(system.getString(R.string.speech_revealer),"10"));
 
         DOP_REVEALER.initCharacter(system.getString(R.string.dop_revealer),
-                    new Speech(system.getString(R.string.speech_revealer),"10~"));
+                    new Speech(system.getString(R.string.speech_dop_revealer),"10 ~"));
 
         CURATOR.initCharacter(system.getString(R.string.curator),
                 new Speech(system.getString(R.string.speech_curator),"11"));
 
         DOP_CURATOR.initCharacter(system.getString(R.string.dop_curator),
-                    new Speech(system.getString(R.string.speech_dop_curator),"11~"));
+                    new Speech(system.getString(R.string.speech_dop_curator),"11 ~"));
 
         BODYGUARD.initCharacter(system.getString(R.string.bodyguard),
                 new Speech(system.getString(R.string.speech_bodyguard),""));
@@ -152,62 +132,62 @@ public class Character {
 
 
 
-
+    public static final int NOTHING = 0,DOP_DIRECT = 4,ANOTHER_ROUND = 8;
 
     public static final Character DOPPELGANGER = new Character("doppelganger");
 
     public static final Character WEREWOLF = new Character("werewolf");
 
-    public static final Character MINION = new Character("minion");
+    public static final Character MINION = new Character("minion",ANOTHER_ROUND);
 
-    public static final Character DOP_MINION = new Character("dop_minion",false,0);
+    public static final Character DOP_MINION = new Character("dop_minion",NOTHING,0);
 
-    public static final Character MASON = new Character("mason",false,2);
+    public static final Character MASON = new Character("mason",NOTHING,2);
 
-    public static final Character SEER = new Character("seer",true);
+    public static final Character SEER = new Character("seer",DOP_DIRECT);
 
-    public static final Character ROBBER =new Character("robber",true);
+    public static final Character ROBBER =new Character("robber",DOP_DIRECT);
 
-    public static final Character TROUBLEMAKER = new Character("troublemaker",true);
+    public static final Character TROUBLEMAKER = new Character("troublemaker",DOP_DIRECT);
 
-    public static final Character DRUNK = new Character("drunk",true);
+    public static final Character DRUNK = new Character("drunk",DOP_DIRECT);
 
-    public static final Character INSOMNIAC = new Character("insomniac");
+    public static final Character INSOMNIAC = new Character("insomniac",ANOTHER_ROUND);
 
-    public static final Character DOP_INSOMNIAC = new Character("dop_insomniac",false,0);
+    public static final Character DOP_INSOMNIAC = new Character("dop_insomniac",NOTHING,0);
 
     public static final Character TANNER = new Character("tanner");
 
     public static final Character HUNTER = new Character("hunter");
 
-    public static final Character VILLAGER = new Character("villager",false,3);
+    public static final Character VILLAGER = new Character("villager",NOTHING,3);
 
 
 
 
 
 
-    public static final Character SENTINEL = new Character("sentinel",true);
+    public static final Character SENTINEL = new Character("sentinel",DOP_DIRECT);
 
     public static final Character ALPHA_WOLF = new Character("alpha_wolf");
 
-    public static final Character MYSTIC_WOLF = new Character("mystic_wolf",true);
+    public static final Character MYSTIC_WOLF = new Character("mystic_wolf",DOP_DIRECT);
 
-    public static final Character APPRENTICE_SEER = new Character("apprentice_seer",true);
+    public static final Character APPRENTICE_SEER = new Character("apprentice_seer",DOP_DIRECT);
 
-    public static final Character PARANORMAL_INVESTIGATOR = new Character("paranormal_investigator",true);
+    public static final Character PARANORMAL_INVESTIGATOR = new Character("paranormal_investigator",DOP_DIRECT);
 
-    public static final Character WITCH = new Character("witch",true);
+    public static final Character WITCH = new Character("witch",DOP_DIRECT);
 
-    public static final Character VILLAGE_IDIOT = new Character("village_idiot",true);
+    public static final Character VILLAGE_IDIOT = new Character("village_idiot",DOP_DIRECT);
 
-    public static final Character REVEALER = new Character("revealer");
+    public static final Character REVEALER = new Character("revealer",ANOTHER_ROUND);
 
-    public static final Character DOP_REVEALER = new Character("dop_revealer",false,0);
+    public static final Character DOP_REVEALER = new Character("dop_revealer",NOTHING,0);
 
-    public static final Character CURATOR = new Character("curator");
+    public static final Character CURATOR = new Character("curator",ANOTHER_ROUND);
 
-    public static final Character DOP_CURATOR = new Character("dop_curator");
+    public static final Character DOP_CURATOR = new Character("dop_curator",NOTHING,0);
             
     public static final Character BODYGUARD = new Character("bodyguard");
 
@@ -221,9 +201,11 @@ public class Character {
 
 
 
+
+
     private final String name;
     private String text,order;
-    private final boolean dopDirect;
+    private final int dopDirect;
     private final int maxCount;
     private final int waitingTime;
 
@@ -237,24 +219,24 @@ public class Character {
                 ", order='" + order + '\'' +
                 ", dopDirect=" + dopDirect +
                 ", maxCount=" + maxCount +
-                ", waitingTime=" + waitingTime +
+                "=" + waitingTime +
                 ", speeches=" + speeches +
                 '}';
     }
 
     public Character(String name) {
-        this(name,false,1,5);
+        this(name,0,1,5);
     }
 
-    public Character(String name,boolean dopDirect){
+    public Character(String name,int dopDirect){
         this(name,dopDirect,1,5);
     }
 
-    public Character(String name,boolean dopDirect,int maxCount) {
+    public Character(String name,int dopDirect,int maxCount) {
         this(name,dopDirect,maxCount,5);
     }
 
-    public Character(String name,boolean dopDirect, int maxCount, int waitingTime) {
+    public Character(String name,int dopDirect, int maxCount, int waitingTime) {
         this.name = name;
         this.dopDirect = dopDirect;
         this.maxCount = maxCount;
@@ -263,7 +245,6 @@ public class Character {
     }
 
     private void initCharacter(String text,Speech... speeches) {
-        Log.d("string",text.split("\\.").length + "");
         if (!text.contains(".")) {
             order =  "";
             this.text = text;
@@ -280,7 +261,7 @@ public class Character {
             if (lastchar > 0xAC00 && lastchar < 0xD7A3) {
                 text += (lastchar - 0xAC00) % 28 > 0 ? "은" : "는";
             }
-            this.speeches.put(order + ":",new Speech(system.getString(R.string.close_eye).replace("{}",text),order + ":"));
+            this.speeches.put(order + " :",new Speech(system.getString(R.string.close_eyes).replace("{}",text),order + ":"));
         }
     }
 
@@ -289,7 +270,7 @@ public class Character {
         return order;
     }
 
-    public boolean isDopDirect() {
+    public int getDopDirect() {
         return dopDirect;
     }
 

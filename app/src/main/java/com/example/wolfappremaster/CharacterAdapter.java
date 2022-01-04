@@ -41,15 +41,15 @@ public class CharacterAdapter extends ArrayAdapter<CharacterItem> {
 
         TextView tv = v.findViewById(R.id.character_name);
         Button btn = v.findViewById(R.id.count_btn);
-        String text = character.getOrder().equals("") ? character.getText() : character.getOrder() + "." + character.getText();
+        String text = character.getOrder().equals("") ? character.getText() : character.getOrder().replace(" ","") + "." + character.getText();
 
         tv.setText(text);
         btn.setText(item.getCount() > 0 ? item.getCount() + "" : "");
 
         btn.setOnClickListener(view -> {
-            Log.d("string",item.toString());
             if (item.getCount() >= item.getCharacter().getMaxCount()) item.setCount(0);
             else item.setCount(item.getCount() + 1);
+            Log.d("string",item.getCount() + "");
             if (item.getCount() > 0) {
                 btn.setText(item.getCount() + "");
                 context.addPool(item);
@@ -60,7 +60,6 @@ public class CharacterAdapter extends ArrayAdapter<CharacterItem> {
         });
 
         v.setOnClickListener(view -> {
-            Log.d("string",item.toString());
             context.setViewingCharacter(item);
         });
         return v;

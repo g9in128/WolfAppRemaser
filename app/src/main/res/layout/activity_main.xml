@@ -19,37 +19,12 @@
         android:layout_weight="3"
         android:orientation="vertical">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/script"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:visibility="invisible"
-            android:gravity="center">
-
-            <TextView
-                android:id="@+id/selected_character"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="대기시간 : "/>
-
-            <EditText
-                android:id="@+id/waiting_time"
-                android:inputType="number"
-                android:digits="0123456789"
-                android:layout_width="20dp"
-                android:layout_height="wrap_content"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="초"/>
-
-
-        </LinearLayout>
+            android:layout_weight="20"
+            android:visibility="gone"/>
 
         <EditText
             android:id="@+id/host_speech"
@@ -63,8 +38,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="2"
-            android:gravity="center"
-            android:text="@string/entry_text"/>
+            android:gravity="center"/>
         
         <LinearLayout
             android:id="@+id/select_btns"
