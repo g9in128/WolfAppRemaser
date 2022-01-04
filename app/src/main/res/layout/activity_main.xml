@@ -53,6 +53,7 @@
 
         <EditText
             android:id="@+id/host_speech"
+            android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="20"/>

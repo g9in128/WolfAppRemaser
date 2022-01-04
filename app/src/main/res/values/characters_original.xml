@@ -23,6 +23,9 @@
     <string name="dop_insomniac">9~.도플갱어 불면증환자</string>
     <string name="speech_dop_insomniac">만약 도플갱어가 불면증환자를 봤다면 지금 눈을 뜹니다 최종적으로 바뀐 자신의 직업카드를 확인합니다.</string>
     <string name="tanner">무두장이</string>
+    <string name="speech_tanner">무두장이는 밤에 일어나지 않습니다 무두장이는 자신이 죽으면 승리합니다.</string>
     <string name="hunter">사냥꾼</string>
+    <string name="speech_hunter">사냥꾼은 밤에 일어나지 않습니다 사냥꾼은 투표로 죽을경우 다른사람 한명을 데리고 갈 수 있습니다.</string>
     <string name="villager">마을주민</string>
+    <string name="speech_villager">ㅋ</string>
 </resources>

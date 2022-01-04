@@ -2,6 +2,7 @@ package com.example.wolfappremaster;
 
 import android.content.Context;
 import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,10 +19,12 @@ import java.util.List;
 public class CharacterAdapter extends ArrayAdapter<CharacterItem> {
 
     private final List<CharacterItem> items;
+    private final MainActivity context;
 
     public CharacterAdapter(@NonNull Context context, int resource, @NonNull List<CharacterItem> objects) {
         super(context, resource, objects);
         this.items = objects;
+        this.context = (MainActivity) context;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -38,15 +41,28 @@ public class CharacterAdapter extends ArrayAdapter<CharacterItem> {
 
         TextView tv = v.findViewById(R.id.character_name);
         Button btn = v.findViewById(R.id.count_btn);
-        String text = character.getOrder() == "" ? character.getText() : character.getOrder() + "." + character.getText();
+        String text = character.getOrder().equals("") ? character.getText() : character.getOrder() + "." + character.getText();
+
         tv.setText(text);
         btn.setText(item.getCount() > 0 ? item.getCount() + "" : "");
+
         btn.setOnClickListener(view -> {
+            Log.d("string",item.toString());
             if (item.getCount() >= item.getCharacter().getMaxCount()) item.setCount(0);
             else item.setCount(item.getCount() + 1);
-            btn.setText(item.getCount() > 0 ? item.getCount() + "" : "");
+            if (item.getCount() > 0) {
+                btn.setText(item.getCount() + "");
+                context.addPool(item);
+            }else {
+                btn.setText("");
+                context.removePool(item);
+            }
         });
 
+        v.setOnClickListener(view -> {
+            Log.d("string",item.toString());
+            context.setViewingCharacter(item);
+        });
         return v;
     }
 }

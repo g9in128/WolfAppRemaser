@@ -23,4 +23,5 @@
     <string name="dop_curator">11~.도플갱어 유물관리자</string>
     <string name="speech_dop_curator">만일 도플갱어가 유물관리자를 봤다면 지금 눈을뜹니다 유물토큰중 무작위로 하나를 골라 원하는 사람의 카드 위에 올려 놓습니다.</string>
     <string name="bodyguard">호위병</string>
+    <string name="speech_bodyguard">호위병은 밤에 일어나지 않습니다 호위병은 </string>
 </resources>

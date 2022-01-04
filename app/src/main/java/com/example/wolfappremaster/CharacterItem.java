@@ -23,6 +23,16 @@ public class CharacterItem {
         }
     }
 
+    @Override
+    public String toString() {
+        return "CharacterItem{" +
+                "character=" + character +
+                ", count=" + count +
+                ", waitingTime=" + waitingTime +
+                ", speeches=" + speeches +
+                '}';
+    }
+
     public Character getCharacter() {
         return character;
     }
