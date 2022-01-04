@@ -37,9 +37,11 @@ public class CharacterAdapter extends ArrayAdapter<CharacterItem> {
 
         TextView tv = v.findViewById(R.id.character_name);
         Button btn = v.findViewById(R.id.count_btn);
+        btn.setText(item.getCount() > 0 ? item.getCount() + "" : "");
         btn.setOnClickListener(view -> {
             if (item.getCount() >= item.getCharacter().getMaxCount()) item.setCount(0);
             else item.setCount(item.getCount() + 1);
+            btn.setText(item.getCount() > 0 ? item.getCount() + "" : "");
         });
 
         return super.getView(position, convertView, parent);

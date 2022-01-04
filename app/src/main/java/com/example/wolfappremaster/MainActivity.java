@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -49,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Log.d("string",String.format("%x ,%x", R.string.doppelganger,R.string.speech_doppelganger));
+
         handler = new PreferenceHandler(this);
 
         characters = findViewById(R.id.characters);
@@ -62,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
         pauseBtn = findViewById(R.id.pause_btn);
 
         setViewing(handler.getString(PreferenceHandler.SETTING_PREFERENCE,"viewing"));
+
+        characters.setAdapter(new CharacterAdapter(this,R.layout.listview_item,items));
 
     }
 }

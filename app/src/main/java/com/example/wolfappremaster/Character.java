@@ -1,7 +1,9 @@
 package com.example.wolfappremaster;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -10,6 +12,11 @@ import java.util.stream.Collectors;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class Character {
+
+    private static void initResource(Context context) {
+        system = context.getResources();
+
+    }
 
     private static Character newCharacter(String name,String text,Speech... speeches) {
         return newCharacter(name,text,false,1,5,speeches);
@@ -40,10 +47,11 @@ public class Character {
 
 
 
-    private static Resources system = Resources.getSystem();
+    private static Resources system;
 
     public static final Character DOPPELGANGER =
-            newCharacter("doppelganger",system.getString(R.string.doppelganger),new Speech(system.getString(R.string.speech_doppelganger),"1", (speech, characters) -> {
+            newCharacter("doppelganger",system.getString(R.string.doppelganger),new Speech(system.getString(R.string.speech_doppelganger),
+                    "1", (speech, characters) -> {
                 String str = characters.stream().filter(character -> character.dopDirect).map(character -> character.text).collect(Collectors.joining(","));
                 return speech.replace("{}",str);
             }));
@@ -64,7 +72,8 @@ public class Character {
             }));
 
     public static final Character MINION =
-            newCharacter("minion",system.getString(R.string.minion),new Speech(system.getString(R.string.speech_minion),"3"),new Speech(system.getString(R.string.hands_down),"3~~"));
+            newCharacter("minion",system.getString(R.string.minion),new Speech(system.getString(R.string.speech_minion),"3"),
+                    new Speech(system.getString(R.string.hands_down),"3~~"));
 
     public static final Character DOP_MINION =
             newCharacter("dop_minion",system.getString(R.string.dop_minion),0,new Speech(system.getString(R.string.speech_dop_minion),"3~"));
@@ -94,7 +103,8 @@ public class Character {
             newCharacter("robber",system.getString(R.string.robber),true,new Speech(system.getString(R.string.speech_robber),"6"));
 
     public static final Character TROUBLEMAKER =
-            newCharacter("troublemaker",system.getString(R.string.troublemaker),true,1,8,new Speech(system.getString(R.string.speech_troublemaker),"7"));
+            newCharacter("troublemaker",system.getString(R.string.troublemaker),true,1,8,
+                    new Speech(system.getString(R.string.speech_troublemaker),"7"));
 
     public static final Character DRUNK =
             newCharacter("drunk",system.getString(R.string.drunk),true,new Speech(system.getString(R.string.speech_drunk),"8"));
@@ -103,7 +113,8 @@ public class Character {
             newCharacter("insomniac",system.getString(R.string.insomniac),new Speech(system.getString(R.string.speech_insomniac),"9"));
 
     public static final Character DOP_INSOMNIAC =
-            newCharacter("dop_insomniac",system.getString(R.string.dop_insomniac),0,new Speech(system.getString(R.string.speech_dop_insomniac),"9~"));
+            newCharacter("dop_insomniac",system.getString(R.string.dop_insomniac),0,
+                    new Speech(system.getString(R.string.speech_dop_insomniac),"9~"));
 
     public static final Character TANNER =
             newCharacter("tanner",system.getString(R.string.tanner));
@@ -122,7 +133,8 @@ public class Character {
             newCharacter("sentinel",system.getString(R.string.sentinel),true,new Speech(system.getString(R.string.speech_sentinel),"0"));
 
     public static final Character ALPHA_WOLF =
-            newCharacter("alpha_wolf",system.getString(R.string.alpha_wolf),true,new Speech(system.getString(R.string.speech_werewolf),"2",(speech, characters) ->{
+            newCharacter("alpha_wolf",system.getString(R.string.alpha_wolf),true,
+                    new Speech(system.getString(R.string.speech_werewolf),"2",(speech, characters) ->{
                 if (!characters.contains(DOPPELGANGER)) {
                     String str = "";
                     boolean add = true;
@@ -137,7 +149,8 @@ public class Character {
             }),new Speech(system.getString(R.string.speech_alpha_wolf),"2B"));
 
     public static final Character MYSTIC_WOLF =
-            newCharacter("mystic_wolf",system.getString(R.string.mystic_wolf),true,new Speech(system.getString(R.string.speech_werewolf),"2",(speech, characters) ->{
+            newCharacter("mystic_wolf",system.getString(R.string.mystic_wolf),true,
+                    new Speech(system.getString(R.string.speech_werewolf),"2",(speech, characters) ->{
                 if (!characters.contains(DOPPELGANGER)) {
                     String str = "";
                     boolean add = true;
@@ -152,7 +165,8 @@ public class Character {
             }),new Speech(system.getString(R.string.speech_mystic_wolf),"2C"));
 
     public static final Character APPRENTICE_SEER =
-            newCharacter("apprentice_seer",system.getString(R.string.apprentice_seer),true,new Speech(system.getString(R.string.speech_apprentice_seer),"5B"));
+            newCharacter("apprentice_seer",system.getString(R.string.apprentice_seer),true,
+                    new Speech(system.getString(R.string.speech_apprentice_seer),"5B"));
 
     public static final Character PARANORMAL_INVESTIGATOR =
             newCharacter("paranormal_investigator",system.getString(R.string.paranormal_investigator),true,new Speech(system.getString(R.string.speech_paranormal_investigator),"5C"));
@@ -161,19 +175,22 @@ public class Character {
             newCharacter("witch",system.getString(R.string.witch),true,new Speech(system.getString(R.string.speech_witch),"6B"));
 
     public static final Character VILLAGE_IDIOT =
-            newCharacter("village_idiot",system.getString(R.string.village_idiot),true,1,10,new Speech(system.getString(R.string.speech_village_idiot),"7B"));
+            newCharacter("village_idiot",system.getString(R.string.village_idiot),true,1,10,
+                    new Speech(system.getString(R.string.speech_village_idiot),"7B"));
 
     public static final Character REVEALER =
             newCharacter("revealer",system.getString(R.string.revealer),new Speech(system.getString(R.string.speech_revealer),"10"));
 
     public static final Character DOP_REVEALER =
-            newCharacter("dop_revealer",system.getString(R.string.dop_revealer),0,new Speech(system.getString(R.string.speech_revealer),"10~"));
+            newCharacter("dop_revealer",system.getString(R.string.dop_revealer),0,
+                    new Speech(system.getString(R.string.speech_revealer),"10~"));
 
     public static final Character CURATOR =
             newCharacter("curator",system.getString(R.string.curator),new Speech(system.getString(R.string.speech_curator),"11"));
 
     public static final Character DOP_CURATOR =
-            newCharacter("dop_curator", system.getString(R.string.dop_curator),0,new Speech(system.getString(R.string.speech_dop_curator),"11~"));
+            newCharacter("dop_curator", system.getString(R.string.dop_curator),0,
+                    new Speech(system.getString(R.string.speech_dop_curator),"11~"));
 
     public static final Character BODYGUARD =
             newCharacter("bodyguard",system.getString(R.string.bodyguard));
