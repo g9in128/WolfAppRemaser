@@ -12,7 +12,9 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,8 +35,9 @@ public class MainActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void setViewing(String view) {
-        characterList = Arrays.asList(Character.originalCharacters);
+        characterList = new ArrayList<>(Arrays.asList(Character.originalCharacters));
         characterList.addAll(Arrays.asList(Character.daybreakCharacters));
+        characterList.sort(Comparator.comparing(Character::getOrder));
         viewing = view;
         handler.setString(PreferenceHandler.SETTING_PREFERENCE,"viewing",viewing);
         items = characterList.stream().map(character -> {
@@ -49,8 +52,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        Log.d("string",String.format("%x ,%x", R.string.doppelganger,R.string.speech_doppelganger));
+        getSupportActionBar().hide();
+        Character.initResource(this);
+//        Log.d("string",String.format("%x ,%x", R.string.doppelganger,R.string.speech_doppelganger));
 
         handler = new PreferenceHandler(this);
 

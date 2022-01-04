@@ -6,8 +6,8 @@
     android:gravity="center">
 
     <TextView
-        android:layout_marginLeft="10dp"
         android:id="@+id/character_name"
+        android:layout_marginLeft="10dp"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="5"

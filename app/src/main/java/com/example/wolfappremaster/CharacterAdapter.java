@@ -34,9 +34,12 @@ public class CharacterAdapter extends ArrayAdapter<CharacterItem> {
             v = inflater.inflate(R.layout.listview_item,null);
         }
         CharacterItem item = items.get(position);
+        Character character = item.getCharacter();
 
         TextView tv = v.findViewById(R.id.character_name);
         Button btn = v.findViewById(R.id.count_btn);
+        String text = character.getOrder() == "" ? character.getText() : character.getOrder() + "." + character.getText();
+        tv.setText(text);
         btn.setText(item.getCount() > 0 ? item.getCount() + "" : "");
         btn.setOnClickListener(view -> {
             if (item.getCount() >= item.getCharacter().getMaxCount()) item.setCount(0);
@@ -44,6 +47,6 @@ public class CharacterAdapter extends ArrayAdapter<CharacterItem> {
             btn.setText(item.getCount() > 0 ? item.getCount() + "" : "");
         });
 
-        return super.getView(position, convertView, parent);
+        return v;
     }
 }
