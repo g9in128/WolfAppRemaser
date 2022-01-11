@@ -3,6 +3,7 @@ package com.example.wolfappremaster;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -169,7 +170,7 @@ public class Character {
 
     public static final Character SENTINEL = new Character("sentinel",DOP_DIRECT);
 
-    public static final Character ALPHA_WOLF = new Character("alpha_wolf");
+    public static final Character ALPHA_WOLF = new Character("alpha_wolf",DOP_DIRECT);
 
     public static final Character MYSTIC_WOLF = new Character("mystic_wolf",DOP_DIRECT);
 
@@ -257,11 +258,15 @@ public class Character {
             this.speeches.put(i.getOrder(),i);
         }
         if(!this.speeches.isEmpty()) {
+            String str = this.text;
             char lastchar = text.charAt(text.length() - 1);
             if (lastchar > 0xAC00 && lastchar < 0xD7A3) {
-                text += (lastchar - 0xAC00) % 28 > 0 ? "은" : "는";
+                str += (lastchar - 0xAC00) % 28 > 0 ? "은" : "는";
             }
-            this.speeches.put(order + " :",new Speech(system.getString(R.string.close_eyes).replace("{}",text),order + ":"));
+            String order = this.order;
+            if (!order.contains(" "))  order += " ";
+            this.speeches.put(order + ":",new Speech(system.getString(R.string.close_eyes).replace("{}",str),order + ":"));
+            Log.d("string",toString() + "\n\n\n\n");
         }
     }
 

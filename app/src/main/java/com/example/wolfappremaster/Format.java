@@ -8,7 +8,6 @@ public class Format {
 
     private Format() {}
 
-
     private static final LinkedHashMap<String,FormatFunc> formats = new LinkedHashMap<>();
 
     public static void add(String order,FormatFunc func) {
@@ -16,8 +15,12 @@ public class Format {
     }
 
     public static FormatFunc get(String order) {
-        return formats.get(order);
+        if (formats.containsKey(order)) return formats.get(order);
+        return DEFAULT;
     }
+
+
+    private static final FormatFunc DEFAULT = (speech, characters) -> speech;
 
 
     public interface FormatFunc {

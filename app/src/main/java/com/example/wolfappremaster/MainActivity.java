@@ -194,17 +194,18 @@ public class MainActivity extends AppCompatActivity {
         });
         ArrayList<Speech> speechArrayList = new ArrayList<>(speeches.values());
         speechArrayList.sort(new OrderSortSp());
-
-        tts.speak(getString(R.string.close_eyes_all),TextToSpeech.QUEUE_FLUSH,null);
+        tts.speak(getString(R.string.close_eyes_all),TextToSpeech.QUEUE_ADD,null);
         tts.playSilentUtterance(1000l,TextToSpeech.QUEUE_ADD,null);
 
         speechArrayList.forEach(s -> {
-            tts.speak(s.getSpeech(),TextToSpeech.QUEUE_FLUSH,null,s.getOrder());
+            tts.speak(Format.get(s.getOrder()).format(s.getSpeech(),new ArrayList<>(pool.keySet())),TextToSpeech.QUEUE_ADD,null,s.getOrder());
             tts.playSilentUtterance(s.getWaitingTime() * 1000l,TextToSpeech.QUEUE_ADD,null);
         });
 
-        tts.speak(getString(R.string.open_eyes_all),TextToSpeech.QUEUE_FLUSH,null);
+        tts.speak(getString(R.string.open_eyes_all),TextToSpeech.QUEUE_ADD,null);
         tts.playSilentUtterance(1000l,TextToSpeech.QUEUE_ADD,null);
+
+        Log.d("string",pool.toString());
 
         selectBtns.setVisibility(View.VISIBLE);
         playBtns.setVisibility(View.GONE);
