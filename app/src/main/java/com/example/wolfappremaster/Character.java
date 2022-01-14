@@ -46,7 +46,7 @@ public class Character {
 
         MINION.initCharacter(system.getString(R.string.minion),
                 new Speech(system.getString(R.string.speech_minion),"3"),
-                    new Speech(system.getString(R.string.werewolf_hands_down),"3 ~~"));
+                    new Speech(system.getString(R.string.werewolf_hands_down),"3 ~~",2));
 
         DOP_MINION.initCharacter(system.getString(R.string.dop_minion),
                 new Speech(system.getString(R.string.speech_dop_minion),"3 ~"));
@@ -72,7 +72,7 @@ public class Character {
                 new Speech(system.getString(R.string.speech_robber),"6"));
 
         TROUBLEMAKER.initCharacter(system.getString(R.string.troublemaker),
-                new Speech(system.getString(R.string.speech_troublemaker),"7"));
+                new Speech(system.getString(R.string.speech_troublemaker),"7",7));
 
         DRUNK.initCharacter(system.getString(R.string.drunk),
                 new Speech(system.getString(R.string.speech_drunk),"8"));
@@ -113,7 +113,7 @@ public class Character {
                 new Speech(system.getString(R.string.speech_witch),"6 B"));
 
         VILLAGE_IDIOT.initCharacter(system.getString(R.string.village_idiot),
-                    new Speech(system.getString(R.string.speech_village_idiot),"7 B"));
+                    new Speech(system.getString(R.string.speech_village_idiot),"7 B",10));
 
         REVEALER.initCharacter(system.getString(R.string.revealer),
                 new Speech(system.getString(R.string.speech_revealer),"10"));
@@ -265,8 +265,7 @@ public class Character {
             }
             String order = this.order;
             if (!order.contains(" "))  order += " ";
-            this.speeches.put(order + ":",new Speech(system.getString(R.string.close_eyes).replace("{}",str),order + ":"));
-            Log.d("string",toString() + "\n\n\n\n");
+            this.speeches.put(order + ":",new Speech(system.getString(R.string.close_eyes).replace("{}",str),order + ":",2));
         }
     }
 

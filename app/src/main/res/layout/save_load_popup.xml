@@ -14,20 +14,37 @@
         android:textColor="@color/white"
         android:background="@color/black"/>
 
-    <EditText
-        android:id="@+id/save_name"
-        android:layout_margin="20dp"
+    <LinearLayout
         android:layout_width="200dp"
-        android:layout_height="40dp"
-        android:inputType=""
-        android:hint="이름"/>
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/save_name"
+            android:layout_width="0dp"
+            android:layout_weight="8"
+            android:layout_height="50dp"
+            android:inputType=""
+            android:hint="이름"/>
+
+        <Button
+            android:id="@+id/delete_preference"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="2"
+            android:backgroundTint="#00ff0000"
+            android:textColor="@color/black"
+            android:text="🗑"/>
+    </LinearLayout>
+
 
     <Spinner
         android:id="@+id/save_names"
         android:layout_margin="20dp"
         android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:buttonTint="@color/white"
+        android:layout_height="40dp"
+        android:buttonTint="@color/black"
         android:textColor="#000"
         android:backgroundTint="@color/white"/>
 

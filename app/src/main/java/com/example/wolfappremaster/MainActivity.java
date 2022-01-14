@@ -158,10 +158,16 @@ public class MainActivity extends AppCompatActivity {
             String name;
             if (command != null && (command.isEmpty() || command.equals("load"))) {
                 name = data.getStringExtra("saveAs");
-                handler.addPreference(name);
-                items.forEach(item -> {
-                    handler.setCharacter(name,item.getCharacter().getName(),item);
-                });
+                if (name != null) {
+                    handler.addPreference(name);
+                    items.forEach(item -> {
+                        Character character = item.getCharacter();
+                        Speech sp1,sp2;
+                        sp1 = character.getSpeeches().get(character.getOrder());
+                        sp2 = item.getSpeeches().get(character.getOrder());
+                        if (!sp1.equals(sp2))handler.setSpeech(name, item.getCharacter().getName(),sp2);
+                    });
+                }
                 if (command.equals("load")) openSaveLoadPopup(command);
                 setViewing(name);
             }else if (command.equals("start")) {
@@ -186,7 +192,6 @@ public class MainActivity extends AppCompatActivity {
 
         boolean dop = pool.containsKey(Character.DOPPELGANGER);
         pool.values().forEach(item -> {
-            Log.d("string",item.getCharacter().getName());
             speeches.putAll(item.getSpeeches());
             if(dop && item.getCharacter().getDopDirect() == Character.ANOTHER_ROUND) {
                 speeches.putAll(items.get(items.indexOf(item.getCharacter()) + 1).getSpeeches());
@@ -195,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<Speech> speechArrayList = new ArrayList<>(speeches.values());
         speechArrayList.sort(new OrderSortSp());
         tts.speak(getString(R.string.close_eyes_all),TextToSpeech.QUEUE_ADD,null);
-        tts.playSilentUtterance(1000l,TextToSpeech.QUEUE_ADD,null);
+        tts.playSilence(1000l,TextToSpeech.QUEUE_ADD,null);
 
         speechArrayList.forEach(s -> {
             tts.speak(Format.get(s.getOrder()).format(s.getSpeech(),new ArrayList<>(pool.keySet())),TextToSpeech.QUEUE_ADD,null,s.getOrder());
@@ -203,9 +208,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
         tts.speak(getString(R.string.open_eyes_all),TextToSpeech.QUEUE_ADD,null);
-        tts.playSilentUtterance(1000l,TextToSpeech.QUEUE_ADD,null);
+        tts.playSilence(1000l,TextToSpeech.QUEUE_ADD,null);
 
-        Log.d("string",pool.toString());
 
         selectBtns.setVisibility(View.VISIBLE);
         playBtns.setVisibility(View.GONE);
@@ -223,8 +227,10 @@ public class MainActivity extends AppCompatActivity {
         viewing = view;
         handler.setString(PreferenceHandler.SETTING_PREFERENCE,"viewing",viewing);
         items = characterList.stream().map(character -> {
-            CharacterItem item = handler.getCharacter(viewing,character.getName());
-            if (item == null) item = new CharacterItem(character,character.getWaitingTime());
+            CharacterItem item = new CharacterItem(character,character.getWaitingTime());
+            Speech main = handler.getSpeech(view,character.getName());
+            if (character.getSpeeches().get(character.getOrder()).equals(main))
+                item.getSpeeches().put(character.getOrder(),main);
             return item;
         }).collect(Collectors.toList());
         adapter = new CharacterAdapter(this,R.layout.listview_item,items);

@@ -3,6 +3,7 @@ package com.example.wolfappremaster;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -31,6 +32,7 @@ public class PreferenceHandler {
         for(String i : setting.getString("preferences","").split(",")) {
             if (!i.isEmpty()) preferences.put(i,context.getSharedPreferences(i,0));
         }
+        Log.d("string",preferences.toString());
     }
 
     public void addPreference(String name) {
@@ -41,6 +43,19 @@ public class PreferenceHandler {
         else preferences += "," + name;
         setString(SETTING_PREFERENCE,"preferences",preferences);
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void removePreference(String name) {
+        if (!containsPreference(name)) return;
+        SharedPreferences.Editor editor = preferences.get(name).edit();
+        editor.clear();
+        editor.commit();
+        preferences.remove(name);
+        Log.d("string",preferences.toString());
+        setString(SETTING_PREFERENCE,"preferences",
+                preferences.keySet().stream().filter(s -> !s.equals(SETTING_PREFERENCE)).collect(Collectors.joining(",")));
+    }
+
 
     public String getString(String name,String key) {
         SharedPreferences pref = preferences.get(name);
@@ -56,15 +71,30 @@ public class PreferenceHandler {
         editor.commit();
     }
 
-    public CharacterItem getCharacter(String name,String key) {
+    public Speech getSpeech(String name, String key) {
         String text = getString(name,key);
         if (text == null) return null;
-        return gson.fromJson(text,CharacterItem.class);
+        return gson.fromJson(text,Speech.class);
     }
 
-    public void setCharacter(String name,String key,CharacterItem item) {
-        setString(name,key,gson.toJson(item));
+    public void setSpeech(String name, String key, Speech speech) {
+        setString(name,key,gson.toJson(speech));
     }
+
+//    public CharacterItem getCharacter(String name,String key) {
+//        String text = getString(name,key);
+//        if (text == null) return null;
+//        return gson.fromJson(text,CharacterItem.class);
+//    }
+//
+//    @RequiresApi(api = Build.VERSION_CODES.N)
+//    public void setCharacter(String name, String key, CharacterItem item) {
+//        HashMap<String,Speech> map = new HashMap<>();
+//        item.getSpeeches().values().stream().filter(speech -> !speech.equals(item.getCharacter().getSpeeches().get(speech.getOrder())))
+//                .forEach(speech -> map.put(speech.getOrder(),speech));
+//        item.setSpeeches(map);
+//        setString(name,key,gson.toJson(item));
+//    }
 
     public boolean containsCharacter(String name, String key) {
         return preferences.get(name).contains(key);

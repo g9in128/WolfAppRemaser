@@ -1,12 +1,17 @@
 package com.example.wolfappremaster;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -19,7 +24,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -31,7 +38,11 @@ public class SaveLoadPopupActivity extends Activity {
     private Spinner names;
     private Button save_btn;
     private Button close_btn;
+    private Button delete_preference;
+    private PreferenceHandler handler;
+    private List<String> preferences;
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,23 +54,27 @@ public class SaveLoadPopupActivity extends Activity {
         names = findViewById(R.id.save_names);
         save_btn = findViewById(R.id.save_btn);
         close_btn = findViewById(R.id.close_btn);
+        delete_preference = findViewById(R.id.delete_preference);
+
+        handler = new PreferenceHandler(this);
 
         String command = getIntent().getStringExtra("command");
 
         if (command.contains("save")) {
             title.setText(R.string.save_popup_title);
-            save_btn.setText("저장");
+            save_btn.setText("예");
+            close_btn.setText("아니요");
         }else {
             title.setText(R.string.load_popup_title);
             save_btn.setText("확인");
+            close_btn.setText("취소");
         }
 
-        List<String> preferences = Arrays.asList(getIntent().getStringArrayExtra("preferences"));
-        preferences = preferences.subList(1,preferences.size());
+        preferences = Arrays.asList(getIntent().getStringArrayExtra("preferences"));
+        preferences = new ArrayList<>(preferences.subList(1,preferences.size()));
 
-        Log.d("string",preferences.toString());
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,preferences);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,preferences);
 
         names.setAdapter(adapter);
 
@@ -71,7 +86,6 @@ public class SaveLoadPopupActivity extends Activity {
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
             }
         });
 
@@ -93,7 +107,25 @@ public class SaveLoadPopupActivity extends Activity {
             finish();
         });
 
-        close_btn.setOnClickListener(v -> finish());
+        close_btn.setOnClickListener(v -> {
+            if (command.contains("save")) {
+                Intent intent = new Intent();
+                intent.putExtra("command",command.replace("save",""));
+                setResult(RESULT_OK,intent);
+            }
+            finish();
+        });
+
+        delete_preference.setOnClickListener(view -> {
+            String name = this.name.getText() + "";
+            new AlertDialog.Builder(this).setTitle("삭제").setMessage(name + "을(를) 삭제하시겠습니까?")
+                    .setPositiveButton("예", (dialogInterface, i) -> {
+                        handler.removePreference(name);
+                        preferences.remove(name);
+                        adapter.notifyDataSetChanged();
+                        this.name.setText((String) names.getSelectedItem());
+                    }).setNegativeButton("아니요",(dialogInterface, i) -> {}).show();
+        });
 
     }
 }
