@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
 import android.util.Log;
@@ -15,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -74,24 +77,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
             return str1.getOrder().compareTo(str2.getOrder());
-
-        }
-    }
-
-    private class SpeechListener extends UtteranceProgressListener {
-
-        @Override
-        public void onStart(String s) {
-
-        }
-
-        @Override
-        public void onDone(String s) {
-
-        }
-
-        @Override
-        public void onError(String s) {
 
         }
     }
@@ -204,10 +189,32 @@ public class MainActivity extends AppCompatActivity {
         playBtns.setVisibility(View.VISIBLE);
         hostSpeech.setVisibility(View.GONE);
         script.setVisibility(View.VISIBLE);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT);
-        params.weight = 0f;
+        hostSpeech.setEnabled(false);
+
+        final Handler handler = new Handler(){
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                selectBtns.setVisibility(View.VISIBLE);
+                playBtns.setVisibility(View.GONE);
+                hostSpeech.setVisibility(View.VISIBLE);
+                script.setVisibility(View.GONE);
+            }
+        };
 
         HashMap<String,Speech> speeches = new HashMap<>();
+
+        tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
+            @Override
+            public void onStart(String s) {}
+
+            @Override
+            public void onDone(String s) {
+                if ("end".equals(s)) handler.sendMessage(handler.obtainMessage());
+            }
+
+            @Override
+            public void onError(String s) {}
+        });
 
         boolean dop = pool.containsKey(Character.DOPPELGANGER);
         pool.values().forEach(item -> {
@@ -227,14 +234,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         tts.speak(getString(R.string.open_eyes_all),TextToSpeech.QUEUE_ADD,null,"end");
-
-
-        selectBtns.setVisibility(View.VISIBLE);
-        playBtns.setVisibility(View.GONE);
-        hostSpeech.setVisibility(View.VISIBLE);
-        script.setVisibility(View.GONE);
-        params.weight = 20f;
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -242,6 +241,7 @@ public class MainActivity extends AppCompatActivity {
         characterList = new ArrayList<>(Arrays.asList(Character.originalCharacters));
         characterList.addAll(Arrays.asList(Character.daybreakCharacters));
         characterList.sort(new OrderSortChar());
+        Log.d("string",characterList.toString());
         viewing = view;
         handler.setString(PreferenceHandler.SETTING_PREFERENCE,"viewing",viewing);
         items = characterList.stream().map(character -> {
