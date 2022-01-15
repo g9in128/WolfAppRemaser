@@ -1,14 +1,11 @@
 package com.example.wolfappremaster;
 
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
+import android.speech.tts.UtteranceProgressListener;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +14,10 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -73,6 +74,24 @@ public class MainActivity extends AppCompatActivity {
 
             }
             return str1.getOrder().compareTo(str2.getOrder());
+
+        }
+    }
+
+    private class SpeechListener extends UtteranceProgressListener {
+
+        @Override
+        public void onStart(String s) {
+
+        }
+
+        @Override
+        public void onDone(String s) {
+
+        }
+
+        @Override
+        public void onError(String s) {
 
         }
     }
@@ -170,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 if (command.equals("load")) openSaveLoadPopup(command);
                 setViewing(name);
-            }else if (command.equals("start")) {
+            }else if ("start".equals(command)) {
                 startRead();
             }else {
                 name = data.getStringExtra("load");
@@ -199,16 +218,15 @@ public class MainActivity extends AppCompatActivity {
         });
         ArrayList<Speech> speechArrayList = new ArrayList<>(speeches.values());
         speechArrayList.sort(new OrderSortSp());
-        tts.speak(getString(R.string.close_eyes_all),TextToSpeech.QUEUE_ADD,null);
-        tts.playSilence(1000l,TextToSpeech.QUEUE_ADD,null);
+        tts.speak(getString(R.string.close_eyes_all),TextToSpeech.QUEUE_ADD,null,"start");
+        tts.playSilentUtterance(1000l,TextToSpeech.QUEUE_ADD,"wait/start");
 
         speechArrayList.forEach(s -> {
             tts.speak(Format.get(s.getOrder()).format(s.getSpeech(),new ArrayList<>(pool.keySet())),TextToSpeech.QUEUE_ADD,null,s.getOrder());
-            tts.playSilentUtterance(s.getWaitingTime() * 1000l,TextToSpeech.QUEUE_ADD,null);
+            tts.playSilentUtterance(s.getWaitingTime() * 1000l,TextToSpeech.QUEUE_ADD,"wait/" + s.getOrder());
         });
 
-        tts.speak(getString(R.string.open_eyes_all),TextToSpeech.QUEUE_ADD,null);
-        tts.playSilence(1000l,TextToSpeech.QUEUE_ADD,null);
+        tts.speak(getString(R.string.open_eyes_all),TextToSpeech.QUEUE_ADD,null,"end");
 
 
         selectBtns.setVisibility(View.VISIBLE);
@@ -228,8 +246,8 @@ public class MainActivity extends AppCompatActivity {
         handler.setString(PreferenceHandler.SETTING_PREFERENCE,"viewing",viewing);
         items = characterList.stream().map(character -> {
             CharacterItem item = new CharacterItem(character,character.getWaitingTime());
-            Speech main = handler.getSpeech(view,character.getName());
-            if (character.getSpeeches().get(character.getOrder()).equals(main))
+            Speech main = handler.getSpeech(view,character.getName()),charSpeech = character.getSpeeches().get(character.getOrder());
+            if (main != null && !charSpeech.equals(main))
                 item.getSpeeches().put(character.getOrder(),main);
             return item;
         }).collect(Collectors.toList());

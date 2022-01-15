@@ -78,7 +78,7 @@ public class PreferenceHandler {
     }
 
     public void setSpeech(String name, String key, Speech speech) {
-        setString(name,key,gson.toJson(speech));
+        if (speech != null) setString(name,key,gson.toJson(speech));
     }
 
 //    public CharacterItem getCharacter(String name,String key) {

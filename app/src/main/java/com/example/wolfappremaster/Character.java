@@ -3,7 +3,6 @@ package com.example.wolfappremaster;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Build;
-import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -72,7 +71,7 @@ public class Character {
                 new Speech(system.getString(R.string.speech_robber),"6"));
 
         TROUBLEMAKER.initCharacter(system.getString(R.string.troublemaker),
-                new Speech(system.getString(R.string.speech_troublemaker),"7",7));
+                new Speech(system.getString(R.string.speech_troublemaker),"7"));
 
         DRUNK.initCharacter(system.getString(R.string.drunk),
                 new Speech(system.getString(R.string.speech_drunk),"8"));
@@ -113,7 +112,7 @@ public class Character {
                 new Speech(system.getString(R.string.speech_witch),"6 B"));
 
         VILLAGE_IDIOT.initCharacter(system.getString(R.string.village_idiot),
-                    new Speech(system.getString(R.string.speech_village_idiot),"7 B",10));
+                    new Speech(system.getString(R.string.speech_village_idiot),"7 B"));
 
         REVEALER.initCharacter(system.getString(R.string.revealer),
                 new Speech(system.getString(R.string.speech_revealer),"10"));
@@ -149,7 +148,7 @@ public class Character {
 
     public static final Character ROBBER =new Character("robber",DOP_DIRECT);
 
-    public static final Character TROUBLEMAKER = new Character("troublemaker",DOP_DIRECT);
+    public static final Character TROUBLEMAKER = new Character("troublemaker",DOP_DIRECT,1,7);
 
     public static final Character DRUNK = new Character("drunk",DOP_DIRECT);
 
@@ -180,7 +179,7 @@ public class Character {
 
     public static final Character WITCH = new Character("witch",DOP_DIRECT);
 
-    public static final Character VILLAGE_IDIOT = new Character("village_idiot",DOP_DIRECT);
+    public static final Character VILLAGE_IDIOT = new Character("village_idiot",DOP_DIRECT,1,10);
 
     public static final Character REVEALER = new Character("revealer",ANOTHER_ROUND);
 

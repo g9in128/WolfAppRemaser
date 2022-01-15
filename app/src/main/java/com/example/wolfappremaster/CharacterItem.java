@@ -9,7 +9,7 @@ import java.util.HashMap;
 
 public class CharacterItem {
 
-    private transient Character character;
+    private Character character;
     private int count,waitingTime;
     private HashMap<String,Speech> speeches;
 
