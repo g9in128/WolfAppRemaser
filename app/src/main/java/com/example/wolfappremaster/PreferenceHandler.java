@@ -81,20 +81,24 @@ public class PreferenceHandler {
         if (speech != null) setString(name,key,gson.toJson(speech));
     }
 
-//    public CharacterItem getCharacter(String name,String key) {
-//        String text = getString(name,key);
-//        if (text == null) return null;
-//        return gson.fromJson(text,CharacterItem.class);
-//    }
-//
-//    @RequiresApi(api = Build.VERSION_CODES.N)
-//    public void setCharacter(String name, String key, CharacterItem item) {
-//        HashMap<String,Speech> map = new HashMap<>();
-//        item.getSpeeches().values().stream().filter(speech -> !speech.equals(item.getCharacter().getSpeeches().get(speech.getOrder())))
-//                .forEach(speech -> map.put(speech.getOrder(),speech));
-//        item.setSpeeches(map);
-//        setString(name,key,gson.toJson(item));
-//    }
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public CharacterItem getCharacter(String name, Character character) {
+        CharacterItem item = new CharacterItem(character,character.getWaitingTime());
+        Speech main = getSpeech(name,character.getName()),charSpeech = character.getSpeeches().get(character.getOrder());
+        if (main != null && !charSpeech.equals(main))
+            item.getSpeeches().put(character.getOrder(),main);
+        return item;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void setCharacter(String name, CharacterItem item) {
+        Character character = item.getCharacter();
+        Speech sp1,sp2;
+        sp1 = character.getSpeeches().get(character.getOrder());
+        sp2 = item.getSpeeches().get(character.getOrder());
+        if (!sp1.equals(sp2)) setSpeech(name, item.getCharacter().getName(),sp2);
+    }
+
 
     public boolean containsCharacter(String name, String key) {
         return preferences.get(name).contains(key);

@@ -31,59 +31,61 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+class OrderSortChar implements Comparator<Character> {
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public int compare(Character character, Character t1) {
+        String[] order1 = character.getOrder().split(" "),
+                order2 = t1.getOrder().split(" ");
+        String head1 = order1[0],head2 = order2[0];
+        if (head1.isEmpty() != head2.isEmpty()) {
+            return head1.isEmpty() ? 1 : -1;
+        }
+        try {
+            int num1 = Integer.parseInt(head1), num2 = Integer.parseInt(head2);
+            if (num1 != num2) {
+                return num1 - num2;
+            }
+        }catch (NumberFormatException e) {
+
+        }
+        return character.getOrder().compareTo(t1.getOrder());
+
+    }
+}
+
+class OrderSortSp implements Comparator<Speech> {
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public int compare(Speech str1, Speech str2) {
+        String[] order1 = str1.getOrder().split(" "),
+                order2 = str2.getOrder().split(" ");
+        String head1 = order1[0],head2 = order2[0];
+        if (head1.isEmpty() != head2.isEmpty()) {
+            return head1.isEmpty() ? 1 : -1;
+        }
+        try {
+            int num1 = Integer.parseInt(head1), num2 = Integer.parseInt(head2);
+            if (num1 != num2) {
+                return num1 - num2;
+            }
+        }catch (NumberFormatException e) {
+
+        }
+        return str1.getOrder().compareTo(str2.getOrder());
+
+    }
+}
+
 public class MainActivity extends AppCompatActivity {
 
-    private class OrderSortChar implements Comparator<Character> {
 
-        @RequiresApi(api = Build.VERSION_CODES.N)
-        @Override
-        public int compare(Character character, Character t1) {
-            String[] order1 = character.getOrder().split(" "),
-                    order2 = t1.getOrder().split(" ");
-            String head1 = order1[0],head2 = order2[0];
-            if (head1.isEmpty() != head2.isEmpty()) {
-                return head1.isEmpty() ? 1 : -1;
-            }
-            try {
-                int num1 = Integer.parseInt(head1), num2 = Integer.parseInt(head2);
-                if (num1 != num2) {
-                    return num1 - num2;
-                }
-            }catch (NumberFormatException e) {
-
-            }
-            return character.getOrder().compareTo(t1.getOrder());
-
-        }
-    }
-
-    private class OrderSortSp implements Comparator<Speech> {
-
-        @RequiresApi(api = Build.VERSION_CODES.N)
-        @Override
-        public int compare(Speech str1, Speech str2) {
-            String[] order1 = str1.getOrder().split(" "),
-                    order2 = str2.getOrder().split(" ");
-            String head1 = order1[0],head2 = order2[0];
-            if (head1.isEmpty() != head2.isEmpty()) {
-                return head1.isEmpty() ? 1 : -1;
-            }
-            try {
-                int num1 = Integer.parseInt(head1), num2 = Integer.parseInt(head2);
-                if (num1 != num2) {
-                    return num1 - num2;
-                }
-            }catch (NumberFormatException e) {
-
-            }
-            return str1.getOrder().compareTo(str2.getOrder());
-
-        }
-    }
 
     private ListView characters;
     private EditText hostSpeech;
-    private TextView entry,script;
+    private TextView entry;
     private LinearLayout selectBtns,playBtns;
     private Button loadBtn,startBtn,stopBtn,pauseBtn;
 
@@ -91,8 +93,7 @@ public class MainActivity extends AppCompatActivity {
     private Character viewingCharacter;
 
     private PreferenceHandler handler;
-
-    private TextToSpeech tts;
+    private Speaker speaker;
 
     private List<CharacterItem> items;
     private Map<Character,CharacterItem> pool;
@@ -108,11 +109,12 @@ public class MainActivity extends AppCompatActivity {
         Character.initResource(this);
 
         handler = new PreferenceHandler(this);
+        speaker = new Speaker(this);
+
 
         characters = findViewById(R.id.characters);
         hostSpeech = findViewById(R.id.host_speech);
         entry = findViewById(R.id.entry);
-        script = findViewById(R.id.script);
         selectBtns = findViewById(R.id.select_btns);
         playBtns = findViewById(R.id.play_btns);
         loadBtn = findViewById(R.id.load_btn);
@@ -121,13 +123,6 @@ public class MainActivity extends AppCompatActivity {
         pauseBtn = findViewById(R.id.pause_btn);
 
         setViewing(handler.getString(PreferenceHandler.SETTING_PREFERENCE,"viewing"));
-
-        tts = new TextToSpeech(this,i -> {
-            if (i == TextToSpeech.SUCCESS) {
-                int res = tts.setLanguage(Locale.KOREAN);
-                if (res < 0) Log.d("string","한글 x");
-            }
-        });
 
         pool = new HashMap<>();
 
@@ -141,6 +136,17 @@ public class MainActivity extends AppCompatActivity {
         loadBtn.setOnClickListener(view -> openSaveLoadPopup("saveload"));
 
         startBtn.setOnClickListener(view -> openSaveLoadPopup("savestart"));
+
+        pauseBtn.setOnClickListener(view -> {
+            if (speaker.isPaused()) {
+                pauseBtn.setText("일시정지");
+            }else {
+                pauseBtn.setText("재생");
+            }
+            speaker.setPaused(!speaker.isPaused());
+        });
+
+        stopBtn.setOnClickListener(view -> speaker.endRead());
 
     }
 
@@ -164,18 +170,20 @@ public class MainActivity extends AppCompatActivity {
                 name = data.getStringExtra("saveAs");
                 if (name != null) {
                     handler.addPreference(name);
-                    items.forEach(item -> {
-                        Character character = item.getCharacter();
-                        Speech sp1,sp2;
-                        sp1 = character.getSpeeches().get(character.getOrder());
-                        sp2 = item.getSpeeches().get(character.getOrder());
-                        if (!sp1.equals(sp2))handler.setSpeech(name, item.getCharacter().getName(),sp2);
-                    });
+                    items.forEach(item -> handler.setCharacter(name,item));
                 }
                 if (command.equals("load")) openSaveLoadPopup(command);
                 setViewing(name);
             }else if ("start".equals(command)) {
-                startRead();
+                new ArrayList<>(pool.keySet()).stream().forEach(i -> {
+                    if (i.getDopDirect() == Character.ANOTHER_ROUND) {
+                        String order = i.getOrder();
+                        Character dop = Character.getCharacter(order.contains(" ") ? order + "~" : order + " ~");
+                        pool.put(dop,handler.getCharacter(viewing,dop));
+                    }
+                });
+                setModifyMode(false);
+                speaker.startRead(new ArrayList<>(pool.values()));
             }else {
                 name = data.getStringExtra("load");
                 setViewing(name);
@@ -184,73 +192,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    private void startRead() {
-        selectBtns.setVisibility(View.GONE);
-        playBtns.setVisibility(View.VISIBLE);
-        hostSpeech.setVisibility(View.GONE);
-        script.setVisibility(View.VISIBLE);
-        hostSpeech.setEnabled(false);
-
-        final Handler handler = new Handler(){
-            @Override
-            public void handleMessage(@NonNull Message msg) {
-                selectBtns.setVisibility(View.VISIBLE);
-                playBtns.setVisibility(View.GONE);
-                hostSpeech.setVisibility(View.VISIBLE);
-                script.setVisibility(View.GONE);
-            }
-        };
-
-        HashMap<String,Speech> speeches = new HashMap<>();
-
-        tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
-            @Override
-            public void onStart(String s) {}
-
-            @Override
-            public void onDone(String s) {
-                if ("end".equals(s)) handler.sendMessage(handler.obtainMessage());
-            }
-
-            @Override
-            public void onError(String s) {}
-        });
-
-        boolean dop = pool.containsKey(Character.DOPPELGANGER);
-        pool.values().forEach(item -> {
-            speeches.putAll(item.getSpeeches());
-            if(dop && item.getCharacter().getDopDirect() == Character.ANOTHER_ROUND) {
-                speeches.putAll(items.get(items.indexOf(item.getCharacter()) + 1).getSpeeches());
-            }
-        });
-        ArrayList<Speech> speechArrayList = new ArrayList<>(speeches.values());
-        speechArrayList.sort(new OrderSortSp());
-        tts.speak(getString(R.string.close_eyes_all),TextToSpeech.QUEUE_ADD,null,"start");
-        tts.playSilentUtterance(1000l,TextToSpeech.QUEUE_ADD,"wait/start");
-
-        speechArrayList.forEach(s -> {
-            tts.speak(Format.get(s.getOrder()).format(s.getSpeech(),new ArrayList<>(pool.keySet())),TextToSpeech.QUEUE_ADD,null,s.getOrder());
-            tts.playSilentUtterance(s.getWaitingTime() * 1000l,TextToSpeech.QUEUE_ADD,"wait/" + s.getOrder());
-        });
-
-        tts.speak(getString(R.string.open_eyes_all),TextToSpeech.QUEUE_ADD,null,"end");
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
     private void setViewing(String view) {
         characterList = new ArrayList<>(Arrays.asList(Character.originalCharacters));
         characterList.addAll(Arrays.asList(Character.daybreakCharacters));
         characterList.sort(new OrderSortChar());
-        Log.d("string",characterList.toString());
         viewing = view;
         handler.setString(PreferenceHandler.SETTING_PREFERENCE,"viewing",viewing);
-        items = characterList.stream().map(character -> {
-            CharacterItem item = new CharacterItem(character,character.getWaitingTime());
-            Speech main = handler.getSpeech(view,character.getName()),charSpeech = character.getSpeeches().get(character.getOrder());
-            if (main != null && !charSpeech.equals(main))
-                item.getSpeeches().put(character.getOrder(),main);
-            return item;
-        }).collect(Collectors.toList());
+        items = characterList.stream().map(character -> handler.getCharacter(view,character)).collect(Collectors.toList());
         adapter = new CharacterAdapter(this,R.layout.listview_item,items);
         characters.setAdapter(adapter);
         hostSpeech.setText("");
@@ -283,5 +231,16 @@ public class MainActivity extends AppCompatActivity {
     void setViewingCharacter(CharacterItem item) {
         viewingCharacter = item.getCharacter();
         hostSpeech.setText(item.getSpeeches().get(viewingCharacter.getOrder()).getSpeech());
+    }
+
+    void setModifyMode(boolean bool) {
+        if (bool) {
+            selectBtns.setVisibility(View.VISIBLE);
+            playBtns.setVisibility(View.GONE);
+        }else {
+            selectBtns.setVisibility(View.GONE);
+            playBtns.setVisibility(View.VISIBLE);
+        }
+        hostSpeech.setEnabled(bool);
     }
 }

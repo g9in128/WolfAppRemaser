@@ -49,7 +49,6 @@ public class CharacterAdapter extends ArrayAdapter<CharacterItem> {
         btn.setOnClickListener(view -> {
             if (item.getCount() >= item.getCharacter().getMaxCount()) item.setCount(0);
             else item.setCount(item.getCount() + 1);
-            Log.d("string",item.getCount() + "");
             if (item.getCount() > 0) {
                 btn.setText(item.getCount() + "");
                 context.addPool(item);

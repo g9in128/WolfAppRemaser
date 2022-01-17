@@ -6,7 +6,10 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
@@ -199,7 +202,13 @@ public class Character {
             {SENTINEL,ALPHA_WOLF,MYSTIC_WOLF,APPRENTICE_SEER,PARANORMAL_INVESTIGATOR,
                     WITCH,VILLAGE_IDIOT,REVEALER,DOP_REVEALER,CURATOR,DOP_CURATOR,BODYGUARD};
 
-
+    public static Character getCharacter(String order) {
+        List<Character> list = new ArrayList<>(Arrays.asList(originalCharacters));
+        list.addAll(Arrays.asList(daybreakCharacters));
+        for (Character i : list) {
+            if (i.getOrder().equals(order)) return i;
+        }return null;
+    }
 
 
 
