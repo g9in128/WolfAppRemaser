@@ -41,6 +41,7 @@ public class Speaker {
                 Log.d("string",s);
             }
 
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onDone(String s) {
                 Speech now = speeches.isEmpty() ? null : speeches.get(0);
@@ -51,6 +52,8 @@ public class Speaker {
                         else {
                             String str = Format.get(now.getOrder()).format(now.getSpeech(),characters);
                             tts.speak(str,TextToSpeech.QUEUE_ADD,null,"sound");
+                            Character character = Character.getCharacter(now.getOrder());
+                            if (character != null) ((MainActivity)context).setViewingCharacter(character);
                         }
                         break;
                     case "sound":

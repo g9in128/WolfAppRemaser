@@ -59,7 +59,7 @@ public class CharacterAdapter extends ArrayAdapter<CharacterItem> {
         });
 
         v.setOnClickListener(view -> {
-            context.setViewingCharacter(item);
+            context.setViewingCharacter(item.getCharacter());
         });
         return v;
     }

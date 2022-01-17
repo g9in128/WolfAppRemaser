@@ -176,13 +176,14 @@ public class MainActivity extends AppCompatActivity {
                 setViewing(name);
             }else if ("start".equals(command)) {
                 new ArrayList<>(pool.keySet()).stream().forEach(i -> {
-                    if (i.getDopDirect() == Character.ANOTHER_ROUND) {
+                    if (pool.containsKey(Character.DOPPELGANGER) && i.getDopDirect() == Character.ANOTHER_ROUND) {
                         String order = i.getOrder();
                         Character dop = Character.getCharacter(order.contains(" ") ? order + "~" : order + " ~");
                         pool.put(dop,handler.getCharacter(viewing,dop));
                     }
                 });
                 setModifyMode(false);
+                setViewingCharacter(null);
                 speaker.startRead(new ArrayList<>(pool.values()));
             }else {
                 name = data.getStringExtra("load");
@@ -201,7 +202,7 @@ public class MainActivity extends AppCompatActivity {
         items = characterList.stream().map(character -> handler.getCharacter(view,character)).collect(Collectors.toList());
         adapter = new CharacterAdapter(this,R.layout.listview_item,items);
         characters.setAdapter(adapter);
-        hostSpeech.setText("");
+        setViewingCharacter(null);
     }
 
     @SuppressLint("StringFormatMatches")
@@ -211,8 +212,8 @@ public class MainActivity extends AppCompatActivity {
         entry.setText(getString(R.string.entry_text,num));
     }
 
-    Character getViewingCharacter() {
-        return viewingCharacter;
+    String getViewing() {
+        return viewing;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -228,9 +229,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    void setViewingCharacter(CharacterItem item) {
-        viewingCharacter = item.getCharacter();
-        hostSpeech.setText(item.getSpeeches().get(viewingCharacter.getOrder()).getSpeech());
+    void setViewingCharacter(Character item) {
+        viewingCharacter = item;
+        if (item == null) hostSpeech.setText("");
+        else hostSpeech.setText(handler.getCharacter(viewing,item).getSpeeches().get(viewingCharacter.getOrder()).getSpeech());
     }
 
     void setModifyMode(boolean bool) {
