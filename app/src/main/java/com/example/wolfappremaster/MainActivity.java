@@ -2,6 +2,11 @@ package com.example.wolfappremaster;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.BlendMode;
+import android.graphics.BlendModeColorFilter;
+import android.graphics.ColorFilter;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -81,16 +87,16 @@ class OrderSortSp implements Comparator<Speech> {
 
 public class MainActivity extends AppCompatActivity {
 
-
-
     private ListView characters;
     private EditText hostSpeech;
     private TextView entry;
     private LinearLayout selectBtns,playBtns;
     private Button loadBtn,startBtn,stopBtn,pauseBtn;
+    private ProgressBar timeLeft;
 
     private String viewing;
     private Character viewingCharacter;
+    private boolean modifyMode;
 
     private PreferenceHandler handler;
     private Speaker speaker;
@@ -108,6 +114,8 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         Character.initResource(this);
 
+        modifyMode = true;
+
         handler = new PreferenceHandler(this);
         speaker = new Speaker(this);
 
@@ -121,6 +129,11 @@ public class MainActivity extends AppCompatActivity {
         startBtn = findViewById(R.id.start_btn);
         stopBtn = findViewById(R.id.stop_btn);
         pauseBtn = findViewById(R.id.pause_btn);
+        timeLeft = findViewById(R.id.time_left);
+
+//        timeLeft.setIndeterminate(true);
+//        timeLeft.getIndeterminateDrawable().setColorFilter(getColor(R.color.green), PorterDuff.Mode.MULTIPLY);
+
 
         setViewing(handler.getString(PreferenceHandler.SETTING_PREFERENCE,"viewing"));
 
@@ -132,6 +145,7 @@ public class MainActivity extends AppCompatActivity {
             adapter.notifyDataSetChanged();
             return false;
         });
+
 
         loadBtn.setOnClickListener(view -> openSaveLoadPopup("saveload"));
 
@@ -150,10 +164,15 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        speaker.shutdown();
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void openSaveLoadPopup(String command) {
         Intent intent = new Intent(this,SaveLoadPopupActivity.class);
-        intent.putExtra("preferences",handler.getPreferences().toArray(new String[0]));
         intent.putExtra("viewing",viewing);
         intent.putExtra("command",command);
         startActivityForResult(intent,1);
@@ -183,7 +202,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
                 setModifyMode(false);
-                setViewingCharacter(null);
                 speaker.startRead(new ArrayList<>(pool.values()));
             }else {
                 name = data.getStringExtra("load");
@@ -235,6 +253,13 @@ public class MainActivity extends AppCompatActivity {
         else hostSpeech.setText(handler.getCharacter(viewing,item).getSpeeches().get(viewingCharacter.getOrder()).getSpeech());
     }
 
+    void setScript(String str) {
+        if (!modifyMode) {
+            hostSpeech.setText(str);
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
     void setModifyMode(boolean bool) {
         if (bool) {
             selectBtns.setVisibility(View.VISIBLE);
@@ -243,6 +268,18 @@ public class MainActivity extends AppCompatActivity {
             selectBtns.setVisibility(View.GONE);
             playBtns.setVisibility(View.VISIBLE);
         }
+        setViewingCharacter(null);
         hostSpeech.setEnabled(bool);
+        modifyMode = bool;
+        adapter.notifyDataSetChanged();
+    }
+
+    boolean isModifyMode() {
+        return modifyMode;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    void setTimeLeft(long timeLeft, int waitingTime) {
+        this.timeLeft.setProgress((int) (timeLeft / waitingTime),true);
     }
 }

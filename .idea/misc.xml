@@ -3,7 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/Administrator/AndroidStudioProjects/WolfApp_Remaster/app/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="..\:/Users/Administrator/AndroidStudioProjects/WolfApp_Remaster/app/src/main/res/drawable/button.xml" value="0.38177083333333334" />
+        <entry key="..\:/Users/Administrator/AndroidStudioProjects/WolfApp_Remaster/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/Users/Administrator/AndroidStudioProjects/WolfApp_Remaster/app/src/main/res/layout/listview_item.xml" value="0.33" />
         <entry key="..\:/Users/Administrator/AndroidStudioProjects/WolfApp_Remaster/app/src/main/res/layout/popup_listview_item.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/Administrator/AndroidStudioProjects/WolfApp_Remaster/app/src/main/res/layout/save_load_popup.xml" value="0.36614583333333334" />

@@ -57,6 +57,7 @@ public class CharacterAdapter extends ArrayAdapter<CharacterItem> {
                 context.removePool(item);
             }
         });
+        btn.setEnabled(context.isModifyMode());
 
         v.setOnClickListener(view -> {
             context.setViewingCharacter(item.getCharacter());

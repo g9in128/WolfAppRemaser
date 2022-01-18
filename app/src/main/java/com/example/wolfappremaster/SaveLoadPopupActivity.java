@@ -62,7 +62,7 @@ public class SaveLoadPopupActivity extends Activity {
             close_btn.setText("취소");
         }
 
-        preferences = Arrays.asList(getIntent().getStringArrayExtra("preferences"));
+        preferences = handler.getPreferences();
         preferences = new ArrayList<>(preferences.subList(1,preferences.size()));
 
 

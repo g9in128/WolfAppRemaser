@@ -2,6 +2,7 @@ package com.example.wolfappremaster;
 
 import android.content.Context;
 import android.os.Build;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
@@ -23,6 +24,7 @@ public class Speaker {
     private boolean playing;
     private List<Speech> speeches;
     private List<Character> characters;
+    private CountDownTimer timer;
 
     public Speaker(Context context) {
         this.context = context;
@@ -53,13 +55,24 @@ public class Speaker {
                             String str = Format.get(now.getOrder()).format(now.getSpeech(),characters);
                             tts.speak(str,TextToSpeech.QUEUE_ADD,null,"sound");
                             Character character = Character.getCharacter(now.getOrder());
-                            if (character != null) ((MainActivity)context).setViewingCharacter(character);
+                            ((MainActivity)context).setScript(str);
                         }
                         break;
                     case "sound":
                         assert now != null;
                         tts.playSilentUtterance(now.getWaitingTime() * 1000l,TextToSpeech.QUEUE_ADD,"wait");
                         speeches.remove(0);
+                        MainActivity main = ((MainActivity)context);
+                        main.runOnUiThread(() -> timer = new CountDownTimer(now.getWaitingTime() * 1000l,100) {
+                            @Override
+                            public void onTick(long l) {
+                                main.setTimeLeft(l,now.getWaitingTime());
+                            }
+                            @Override
+                            public void onFinish() {
+                                main.setTimeLeft(0l,1);
+                            }
+                        }.start());
                         break;
                     case "end":
                         endRead();
@@ -73,12 +86,16 @@ public class Speaker {
         });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void endRead() {
         tts.stop();
         characters = null;
         speeches = null;
+        if (timer != null) timer.cancel();
+        timer = null;
         playing = false;
         MainActivity main = (MainActivity) context;
+        main.setTimeLeft(0l,1);
         main.runOnUiThread(() -> {
             main.setModifyMode(true);
         });
