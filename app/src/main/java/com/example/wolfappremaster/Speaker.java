@@ -3,7 +3,6 @@ package com.example.wolfappremaster;
 import android.content.Context;
 import android.os.Build;
 import android.os.CountDownTimer;
-import android.os.Handler;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
 import android.util.Log;

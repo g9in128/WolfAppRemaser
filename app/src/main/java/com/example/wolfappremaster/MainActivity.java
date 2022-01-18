@@ -2,20 +2,9 @@ package com.example.wolfappremaster;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.BlendMode;
-import android.graphics.BlendModeColorFilter;
-import android.graphics.ColorFilter;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.speech.tts.TextToSpeech;
-import android.speech.tts.UtteranceProgressListener;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -23,7 +12,6 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,7 +21,6 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -131,9 +118,6 @@ public class MainActivity extends AppCompatActivity {
         pauseBtn = findViewById(R.id.pause_btn);
         timeLeft = findViewById(R.id.time_left);
 
-//        timeLeft.setIndeterminate(true);
-//        timeLeft.getIndeterminateDrawable().setColorFilter(getColor(R.color.green), PorterDuff.Mode.MULTIPLY);
-
 
         setViewing(handler.getString(PreferenceHandler.SETTING_PREFERENCE,"viewing"));
 
@@ -201,6 +185,9 @@ public class MainActivity extends AppCompatActivity {
                         pool.put(dop,handler.getCharacter(viewing,dop));
                     }
                 });
+                if (pool.containsKey(Character.ALPHA_WOLF) || pool.containsKey(Character.MYSTIC_WOLF)) {
+                    pool.put(Character.WEREWOLF,handler.getCharacter(viewing,Character.WEREWOLF));
+                }
                 setModifyMode(false);
                 speaker.startRead(new ArrayList<>(pool.values()));
             }else {

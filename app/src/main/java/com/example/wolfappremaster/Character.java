@@ -23,20 +23,6 @@ public class Character {
     public static void initResource(Context context) {
         system = context.getResources();
 
-        Speech WOLF_SPEECH =
-                new Speech(system.getString(R.string.speech_werewolf),"2",(speech, characters) ->{
-                    if (!characters.contains(DOPPELGANGER)) {
-                        String str = "";
-                        boolean add = true;
-                        for (char i : speech.toCharArray()) {
-                            if (i == '{'&& add) add = false;
-                            if (add) str += i;
-                            if (i == '}'&& !add) add = true;
-                        }
-                        return str;
-                    }
-                    return speech.replace("{","").replace("}","");
-                });
 
         DOPPELGANGER.initCharacter(system.getString(R.string.doppelganger),
                 new Speech(system.getString(R.string.speech_doppelganger), "1", (speech, characters) -> {
@@ -44,7 +30,19 @@ public class Character {
                 return speech.replace("{}",str);
                 }));
 
-        WEREWOLF.initCharacter(system.getString(R.string.werewolf),WOLF_SPEECH);
+        WEREWOLF.initCharacter(system.getString(R.string.werewolf),new Speech(system.getString(R.string.speech_werewolf),"2",(speech, characters) ->{
+            if (!characters.contains(DOPPELGANGER)) {
+                String str = "";
+                boolean add = true;
+                for (char i : speech.toCharArray()) {
+                    if (i == '{'&& add) add = false;
+                    if (add) str += i;
+                    if (i == '}'&& !add) add = true;
+                }
+                return str;
+            }
+            return speech.replace("{","").replace("}","");
+        }));
 
         MINION.initCharacter(system.getString(R.string.minion),
                 new Speech(system.getString(R.string.speech_minion),"3"),
@@ -99,10 +97,10 @@ public class Character {
         SENTINEL.initCharacter(system.getString(R.string.sentinel),
                 new Speech(system.getString(R.string.speech_sentinel),"0"));
 
-        ALPHA_WOLF.initCharacter(system.getString(R.string.alpha_wolf),WOLF_SPEECH
+        ALPHA_WOLF.initCharacter(system.getString(R.string.alpha_wolf)
             ,new Speech(system.getString(R.string.speech_alpha_wolf),"2 B"));
 
-        MYSTIC_WOLF.initCharacter(system.getString(R.string.mystic_wolf),WOLF_SPEECH
+        MYSTIC_WOLF.initCharacter(system.getString(R.string.mystic_wolf)
                 ,new Speech(system.getString(R.string.speech_mystic_wolf),"2 C"));
 
         APPRENTICE_SEER.initCharacter(system.getString(R.string.apprentice_seer),
