@@ -271,7 +271,7 @@ public class Character {
             }
             String order = this.order;
             if (!order.contains(" "))  order += " ";
-            this.speeches.put(order + ":",new Speech(system.getString(R.string.close_eyes).replace("{}",str),order + ":",2));
+            this.speeches.put(order + ":",new Speech(system.getString(R.string.close_eyes).replace("{}",str),order + ":",1));
         }
     }
 

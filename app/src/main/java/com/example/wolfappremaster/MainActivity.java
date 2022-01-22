@@ -1,9 +1,11 @@
 package com.example.wolfappremaster;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -118,8 +120,7 @@ public class MainActivity extends AppCompatActivity {
         pauseBtn = findViewById(R.id.pause_btn);
         timeLeft = findViewById(R.id.time_left);
 
-
-        setViewing(handler.getString(PreferenceHandler.SETTING_PREFERENCE,"viewing"));
+        setViewing(null);
 
         pool = new HashMap<>();
 
@@ -158,8 +159,19 @@ public class MainActivity extends AppCompatActivity {
     private void openSaveLoadPopup(String command) {
         Intent intent = new Intent(this,SaveLoadPopupActivity.class);
         intent.putExtra("viewing",viewing);
-        intent.putExtra("command",command);
-        startActivityForResult(intent,1);
+        if (!command.contains("save")) {
+            intent.putExtra("command",command);
+            startActivityForResult(intent,1);
+            return;
+        }
+        new AlertDialog.Builder(this).setTitle("저장").setMessage("저장하시겠습니까?")
+                .setPositiveButton("예",(dialogInterface, i) -> {
+            intent.putExtra("command",command);
+            startActivityForResult(intent,1);
+        }).setNegativeButton("아니요",(dialogInterface, i) -> {
+            intent.putExtra("command",command.replace("save",""));
+            startActivityForResult(intent,1);
+        }).show();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -203,7 +215,6 @@ public class MainActivity extends AppCompatActivity {
         characterList.addAll(Arrays.asList(Character.daybreakCharacters));
         characterList.sort(new OrderSortChar());
         viewing = view;
-        handler.setString(PreferenceHandler.SETTING_PREFERENCE,"viewing",viewing);
         items = characterList.stream().map(character -> handler.getCharacter(view,character)).collect(Collectors.toList());
         adapter = new CharacterAdapter(this,R.layout.listview_item,items);
         characters.setAdapter(adapter);
@@ -237,7 +248,16 @@ public class MainActivity extends AppCompatActivity {
     void setViewingCharacter(Character item) {
         viewingCharacter = item;
         if (item == null) hostSpeech.setText("");
-        else hostSpeech.setText(handler.getCharacter(viewing,item).getSpeeches().get(viewingCharacter.getOrder()).getSpeech());
+        else {
+            String str = "";
+            for (CharacterItem i : items) {
+                if (item.equals(i.getCharacter())) {
+                    str = i.getSpeeches().get(item.getOrder()).getSpeech();
+                    break;
+                }
+            }
+            hostSpeech.setText(str);
+        }
     }
 
     void setScript(String str) {

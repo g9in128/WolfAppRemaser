@@ -62,6 +62,7 @@ public class Speaker {
                         tts.playSilentUtterance(now.getWaitingTime() * 1000l,TextToSpeech.QUEUE_ADD,"wait");
                         speeches.remove(0);
                         MainActivity main = ((MainActivity)context);
+                        main.setTimeLeft(now.getWaitingTime(),now.getWaitingTime());
                         main.runOnUiThread(() -> timer = new CountDownTimer(now.getWaitingTime() * 1000l,100) {
                             @Override
                             public void onTick(long l) {
@@ -109,7 +110,8 @@ public class Speaker {
         HashMap<String,Speech> map = new HashMap<>();
         characters = new ArrayList<>();
         list.forEach(item -> {
-            map.putAll(item.getSpeeches());
+            if(!item.getCharacter().getOrder().isEmpty())
+                map.putAll(item.getSpeeches());
             characters.add(item.getCharacter());
         });
         speeches = new ArrayList<>(map.values());

@@ -53,8 +53,8 @@ public class SaveLoadPopupActivity extends Activity {
 
         if (command.contains("save")) {
             title.setText(R.string.save_popup_title);
-            save_btn.setText("예");
-            close_btn.setText("아니요");
+            save_btn.setText("저장");
+            close_btn.setText("취소");
         }else {
             title.setText(R.string.load_popup_title);
             save_btn.setText("확인");
@@ -80,8 +80,6 @@ public class SaveLoadPopupActivity extends Activity {
             }
         });
 
-        names.setSelection(preferences.indexOf(getIntent().getStringExtra("viewing")));
-
         name.setFilters(new InputFilter[]{(charSequence, i, i1, spanned, i2, i3) ->
             Pattern.compile("^[a-zA-Z0-9]+$").matcher(charSequence).matches() ? charSequence : ""
         });
@@ -99,11 +97,6 @@ public class SaveLoadPopupActivity extends Activity {
         });
 
         close_btn.setOnClickListener(v -> {
-            if (command.contains("save")) {
-                Intent intent = new Intent();
-                intent.putExtra("command",command.replace("save",""));
-                setResult(RESULT_OK,intent);
-            }
             finish();
         });
 

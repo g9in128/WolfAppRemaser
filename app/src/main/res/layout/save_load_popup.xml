@@ -8,8 +8,9 @@
     <TextView
         android:id="@+id/popup_title"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:text="변경사항을 저장하시겠습니까?"
+        android:layout_height="55dp"
+        android:textSize="20dp"
+        android:text="저장"
         android:gravity="center"
         android:textColor="@color/white"
         android:background="@color/black"/>
@@ -17,7 +18,7 @@
     <LinearLayout
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
+        android:layout_margin="10dp"
         android:orientation="horizontal">
 
         <EditText
@@ -41,7 +42,7 @@
 
     <Spinner
         android:id="@+id/save_names"
-        android:layout_margin="20dp"
+        android:layout_margin="10dp"
         android:layout_width="200dp"
         android:layout_height="40dp"
         android:buttonTint="@color/black"
